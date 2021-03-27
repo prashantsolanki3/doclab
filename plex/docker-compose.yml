@@ -22,4 +22,4 @@ services:
     volumes:
       - ./config:/config
       - ./transcode/temp:/transcode
-      - /media/seagate4tb01/media:/data
+      - /data/media:/data
