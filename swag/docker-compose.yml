@@ -12,6 +12,7 @@ services:
       - URL=***REMOVED***
       - SUBDOMAINS=www, california,
       - VALIDATION=http
+      - DOCKER_MODS=linuxserver/mods:swag-ffmpeg|linuxserver/mods:swag-imagemagick|linuxserver/mods:universal-apprise
       # - CERTPROVIDER= #optional
       # - DNSPLUGIN=cloudflare #optional
       # - PROPAGATION= #optional
