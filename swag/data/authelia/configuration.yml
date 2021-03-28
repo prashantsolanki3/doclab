@@ -30,8 +30,8 @@ access_control:
   default_policy: deny
   rules:
     - domain:
-      - domail.url
-      - "*.domail.url"
+      - prashantsolanki.com
+      - "*.prashantsolanki.com"
       policy: two_factor
 session:
   name: authelia_session
@@ -50,11 +50,11 @@ storage:
 # notifier:
 #   disable_startup_check: false
 #   smtp:
-#     username: myemail@gmail.com
+#     username: solankisrp2@gmail.com
 #     password: longpassword
 #     host: smtp.gmail.com
 #     port: 587
-#     sender: myemail@gmail.com
+#     sender: solankisrp2@gmail.com
 #     subject: "[Authelia] {title}"
 #     startup_check_address: test@authelia.com
 #     trusted_cert: ""
