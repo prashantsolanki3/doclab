@@ -27,3 +27,11 @@ services:
       - 443:443
       - 80:80 #optional
     restart: unless-stopped
+  authelia:
+    image: authelia/authelia:4.21.0
+    container_name: authelia
+    environment:
+      - TZ=Australia/Melbourne
+    volumes:
+      - ./data/authelia:/config
+    restart: unless-stopped
