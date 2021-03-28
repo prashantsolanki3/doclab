@@ -1,0 +1,11 @@
+version: "2.1"
+services:
+  swag:
+    extends:
+      file: ./swag/docker-compose.yml
+      service: swag
+  plex:
+    extends:
+      file: ./plex/docker-compose.yml
+      service: plex
+  
