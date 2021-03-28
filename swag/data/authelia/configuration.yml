@@ -30,8 +30,8 @@ access_control:
   default_policy: deny
   rules:
     - domain:
-      - ***REMOVED***
-      - "*.***REMOVED***"
+      - domail.url
+      - "*.domail.url"
       policy: two_factor
 session:
   name: authelia_session
