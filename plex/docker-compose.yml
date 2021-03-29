@@ -16,7 +16,7 @@ services:
       - 32414:32414/udp
     environment:
       - TZ=Australia/Melbourne
-      # - PLEX_CLAIM=<claimToken>
+      - PLEX_CLAIM=claim-n3RsL21ZA4BURes3AKuP
       - ADVERTISE_IP=http://172.16.1.200:32400/
     hostname: plex.california.home
     volumes:
