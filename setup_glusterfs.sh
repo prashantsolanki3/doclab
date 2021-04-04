@@ -60,9 +60,9 @@ arrh=(${h//;/ })
 for ((n=0;n<${#arrh[@]};n++))
 do
     # gluster peer probe ${arrh[n]}
-    echo "echo \"${arrh[n]}:$b/$g\" "
+    echo "${arrh[$n]}:$b/$g"
 done
 
 
-# gluster volume create $g replica ${arrh[n]} $replicaString
+# gluster volume create $g replica ${#arrh[@]} $replicaString
 # gluster volume start $g
