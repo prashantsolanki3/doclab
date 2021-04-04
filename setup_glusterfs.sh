@@ -56,15 +56,16 @@ echo "$d $v $b $g $a $h"
 
 # # required probing depends on node
 # # IN="bla@some.com;john@home.com"
-replicaString = ""
-arrh=(${h//|/ })
+replicaString= ""
+arrh=(${h//;/ })
 for ((n=0;n<${#arrh[@]};n++))
 do
     # gluster peer probe ${arrh[n]}
-    replicaString = "${arrh[n]}:$b/$g "
+    echo "${arrh[n]}"
+    replicaString= "${arrh[n]}:$b/$g "
 done
 
-echo "$arrh $replicaString"
+echo "$replicaString"
 
 # gluster volume create $g replica ${arrh[n]} $replicaString
 # gluster volume start $g
