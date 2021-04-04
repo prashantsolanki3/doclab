@@ -58,7 +58,7 @@ echo "$d $v $b $g $a $h"
 # # IN="bla@some.com;john@home.com"
 replicaString = ""
 arrh=(${h//|/ })
-for ((n=0;n<${#distro[@]};n++))
+for ((n=0;n<${#arrh[@]};n++))
 do
     # gluster peer probe ${arrh[n]}
     replicaString = "${arrh[n]}:$b/$g "
