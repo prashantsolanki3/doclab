@@ -47,7 +47,7 @@ apt install -y glusterfs-server
 systemctl enable glusterd
 systemctl start glusterd
 
-mkfs.xfs -i size=512 $d
+mkfs.xfs -f -i size=512 $d
 mkdir -p $b
 echo "$d $b xfs defaults 1 2" >> /etc/fstab
 mount -a && mount
