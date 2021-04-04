@@ -60,7 +60,7 @@ arrh=(${h//;/ })
 for ((n=0;n<${#arrh[@]};n++))
 do
     # gluster peer probe ${arrh[n]}
-    echo "${arrh[n]}:$b/$g "
+    echo "echo \"${arrh[n]}:$b/$g\" "
 done
 
 
