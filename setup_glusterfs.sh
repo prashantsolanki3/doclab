@@ -4,7 +4,7 @@ echo "Requires host-names to be set in /etc/h"
 helpFunction()
 {
    echo ""
-   echo "Usage: $0 -d /dev/sdb -v buster -b /data/brick01 -g gv01 -a amd64 -h pve01|pve02"
+   echo "Usage: $0 -d /dev/sdb -v buster -b /data/brick01 -g gv01 -a amd64"
    echo -e "\t-d d e.g. /dev/sdb"
    echo -e "\t-v Debian Version: buster"
    echo -e "\t-b Brick Path: /data/brick01"
