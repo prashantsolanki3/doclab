@@ -5,11 +5,11 @@ services:
     container_name: plex
     network_mode: host
     environment:
-      - PUID=2000
-      - PGID=2000
+      - PUID=1005
+      - PGID=1005
       - VERSION=docker
       - PLEX_CLAIM=claim-n3RsL21ZA4BURes3AKuP
     volumes:
-      - ./config:/config
-      - /data/media:/data/media
+      - /data/gv0/config/plex/config:/config
+      - /data/gv0/media:/data/media
     restart: unless-stopped

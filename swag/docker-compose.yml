@@ -6,8 +6,8 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=1005
+      - PGID=1005
       - TZ=Australia/Melbourne
       - URL=***REMOVED***
       - SUBDOMAINS=www, california,
@@ -23,7 +23,7 @@ services:
       # - STAGING=false #optional
       # - MAXMINDDB_LICENSE_KEY= #optional
     volumes:
-      - ./data/config:/config
+      - /data/gv0/config/swag/config:/config
     ports:
       - "443:443"
       - "80:80" #optional
