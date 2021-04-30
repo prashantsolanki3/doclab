@@ -8,7 +8,7 @@ services:
       - PGID=1005
       - TZ=Australia/Melbourne
     volumes:
-      - /data/gv0/config/nextclound/config:/config
+      - /data/gv0/config/nextcloud/config:/config
       - /data/gv0/media:/data/media
       - /data/gv0/documents:/data/documents
     ports:
