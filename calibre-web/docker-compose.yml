@@ -1,0 +1,16 @@
+version: "3"
+services:
+  calibre-web:
+    image: ghcr.io/linuxserver/calibre-web
+    container_name: calibre-web
+    environment:
+      - PUID=1003
+      - PGID=1003
+      - TZ=Australia/Melbourne
+      - DOCKER_MODS=linuxserver/calibre-web:calibre
+    volumes:
+      - /data/gv0/config/calibre-web/config:/config
+      - /data/gv0/books:/books
+    ports:
+      - 8083:8083
+    restart: unless-stopped
