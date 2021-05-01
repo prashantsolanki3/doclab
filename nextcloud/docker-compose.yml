@@ -1,4 +1,4 @@
-version: "2.1"
+version: "3"
 services:
   nextcloud:
     image: ghcr.io/linuxserver/nextcloud
@@ -12,5 +12,5 @@ services:
       - /data/gv0/media:/data/media
       - /data/gv0/documents:/data/documents
     ports:
-      - 8443:443
+      - 443:443
     restart: unless-stopped
