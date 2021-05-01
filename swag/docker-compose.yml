@@ -23,7 +23,7 @@ services:
       # - STAGING=false #optional
       # - MAXMINDDB_LICENSE_KEY= #optional
     volumes:
-      - /data/gv0/config/swag/config:/config
+      - /data/config/swag/config:/config
     ports:
       - "443:443"
       - "80:80" #optional
