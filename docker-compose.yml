@@ -18,3 +18,7 @@ services:
     extends:
       file: ./mariadb/docker-compose.yml
       service: mariadb
+  heimdall:
+    extends:
+      file: ./heimdall/docker-compose.yml
+      service: heimdall
