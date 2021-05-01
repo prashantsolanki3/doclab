@@ -4,8 +4,8 @@ services:
     image: ghcr.io/linuxserver/nextcloud
     container_name: nextcloud
     environment:
-      - PUID=1005
-      - PGID=1005
+      - PUID=1003
+      - PGID=1003
       - TZ=Australia/Melbourne
     volumes:
       - /data/gv0/config/nextcloud/config:/config
