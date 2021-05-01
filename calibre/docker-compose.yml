@@ -1,0 +1,18 @@
+version: "3"
+services:
+  calibre:
+    image: ghcr.io/linuxserver/calibre
+    container_name: calibre
+    environment:
+      - PUID=1003
+      - PGID=1003
+      - TZ=Australia/Melbourne
+      # - PASSWORD= #optional
+      # - CLI_ARGS= #optional
+    volumes:
+      - /data/gv0/config/calibre/config:/config
+      - /data/gv0/books:/books
+    ports:
+      - 8080:8080
+      - 8081:8081
+    restart: unless-stopped
