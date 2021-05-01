@@ -26,3 +26,9 @@ services:
     extends:
       file: ./calibre-web/docker-compose.yml
       service: calibre-web
+    depends_on:
+      - calibre
+  calibre:
+    extends:
+      file: ./calibre/docker-compose.yml
+      service: calibre
