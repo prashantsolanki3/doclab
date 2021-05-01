@@ -1,0 +1,52 @@
+version: "3"
+services:
+  swag:
+    image: ghcr.io/linuxserver/swag
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1003
+      - PGID=1003
+      - TZ=Australia/Melbourne
+      - URL=***REMOVED***
+      - SUBDOMAINS=www, california, plex, sonarr, radarr,
+      - VALIDATION=http
+      - DOCKER_MODS=linuxserver/mods:swag-ffmpeg|linuxserver/mods:swag-imagemagick|linuxserver/mods:universal-apprise
+      # - CERTPROVIDER= #optional
+      # - DNSPLUGIN=cloudflare #optional
+      # - PROPAGATION= #optional
+      # - DUCKDNSTOKEN= #optional
+      # - EMAIL= #optional
+      # - ONLY_SUBDOMAINS=false #optional
+      # - EXTRA_DOMAINS= #optional
+      # - STAGING=false #optional
+      # - MAXMINDDB_LICENSE_KEY= #optional
+    volumes:
+      - /data/config/swag/config:/config
+    ports:
+      - "443:443"
+      - "80:80" #optional
+    restart: unless-stopped
+  # authelia:
+  #   image: authelia/authelia:4.21.0
+  #   container_name: authelia
+  #   environment:
+  #     - TZ=Australia/Melbourne
+  #   volumes:
+  #     - ./data/authelia:/config
+  #   restart: unless-stopped
+  nextcloud:
+    image: ghcr.io/linuxserver/nextcloud
+    container_name: nextcloud
+    environment:
+      - PUID=1003
+      - PGID=1003
+      - TZ=Australia/Melbourne
+    volumes:
+      - /data/config/nextcloud/config:/config
+      - /data/gv0/media:/data/media
+      - /data/gv0/documents:/data/documents
+    ports:
+      - 8443:443
+    restart: unless-stopped
