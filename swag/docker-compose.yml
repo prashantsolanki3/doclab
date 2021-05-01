@@ -10,7 +10,7 @@ services:
       - PGID=1003
       - TZ=Australia/Melbourne
       - URL=prashantsolanki.com
-      - SUBDOMAINS=www, california,
+      - SUBDOMAINS=www, california, plex, sonarr, radarr,
       - VALIDATION=http
       - DOCKER_MODS=linuxserver/mods:swag-ffmpeg|linuxserver/mods:swag-imagemagick|linuxserver/mods:universal-apprise
       # - CERTPROVIDER= #optional
@@ -25,8 +25,8 @@ services:
     volumes:
       - /data/config/swag/config:/config
     ports:
-      - "443:443"
-      - "80:80" #optional
+      - 443:443
+      - 80:80 #optional
     restart: unless-stopped
   # authelia:
   #   image: authelia/authelia:4.21.0
