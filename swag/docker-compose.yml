@@ -10,7 +10,7 @@ services:
       - PGID=1003
       - TZ=Australia/Melbourne
       - URL=***REMOVED***
-      - SUBDOMAINS=www, california, plex, sonarr, radarr,
+      - SUBDOMAINS=www, california, plex, sonarr, radarr, nextcloud,
       - VALIDATION=http
       - DOCKER_MODS=linuxserver/mods:swag-ffmpeg|linuxserver/mods:swag-imagemagick|linuxserver/mods:universal-apprise
       # - CERTPROVIDER= #optional
