@@ -1,4 +1,4 @@
-version: "2.1"
+version: "3"
 services:
   swag:
     extends:
@@ -12,3 +12,9 @@ services:
     extends:
       file: ./nextcloud/docker-compose.yml
       service: nextcloud
+    depends_on:
+      - mariadb
+  mariadb:
+    extends:
+      file: ./mariadb/docker-compose.yml
+      service: mariadb

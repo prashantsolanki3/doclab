@@ -1,0 +1,16 @@
+version: "3"
+services:
+  mariadb:
+    image: ghcr.io/linuxserver/mariadb
+    container_name: mariadb
+    environment:
+      - PUID=1003
+      - PGID=1003
+      - MYSQL_ROOT_PASSWORD=***REMOVED***
+      - TZ=Australia/Melbourne
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=ncuser
+      - MYSQL_PASSWORD=***REMOVED***
+    volumes:
+      - /data/config/mariadb/config:/config
+    restart: unless-stopped
