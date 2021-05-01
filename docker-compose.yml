@@ -22,3 +22,7 @@ services:
     extends:
       file: ./heimdall/docker-compose.yml
       service: heimdall
+  calibre-web:
+    extends:
+      file: ./calibre-web/docker-compose.yml
+      service: calibre-web
