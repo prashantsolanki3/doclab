@@ -11,7 +11,7 @@ services:
       - /data/config/nextcloud/config:/config
       - /data/gv0/media:/data/media
       - /data/gv0/documents:/data/documents
-      - /data/gv0/nextcloud/nextcloud:/data/db
+      - /data/gv0/nextcloud/db:/data/db
     # ports:
     #   - 8443:443
     restart: unless-stopped
