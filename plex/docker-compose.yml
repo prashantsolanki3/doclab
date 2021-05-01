@@ -8,7 +8,7 @@ services:
       - PUID=1003
       - PGID=1003
       - VERSION=docker
-      - PLEX_CLAIM=claim-n3RsL21ZA4BURes3AKuP
+      - PLEX_CLAIM=claim-yimumPyB5tYYroN1Y4e_
     volumes:
       - /data/config/plex/config:/config
       - /data/gv0/media:/data/media
