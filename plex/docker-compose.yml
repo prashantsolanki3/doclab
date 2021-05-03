@@ -10,6 +10,6 @@ services:
       - VERSION=docker
       - PLEX_CLAIM=claim-yimumPyB5tYYroN1Y4e_
     volumes:
-      - /data/config/plex/config:/config
+      - /data/gv0/config/plex/config:/config
       - /data/gv0/media:/data/media
     restart: unless-stopped
