@@ -7,7 +7,7 @@ services:
       - PUID=1003
       - PGID=1003
       - TZ=Australia/Melbourne
-    volum
+    volume:
       - /data/gv0/config/nextcloud/config:/config
       - /data/gv0/media:/data/media
       - /data/gv0/documents:/data/documents
