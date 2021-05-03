@@ -8,5 +8,5 @@ services:
       - PGID=1003
       - TZ=Australia/Melbourne
     volumes:
-      - /data/config/heimdall/config:/config
+      - /data/gv0/config/heimdall/config:/config
     restart: unless-stopped
