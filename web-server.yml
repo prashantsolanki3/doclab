@@ -4,19 +4,29 @@ services:
     extends:
       file: ./swag/docker-compose.yml
       service: swag
+    env_file: 
+      - ./.env
   openvpn-as:
     extends:
       file: ./openvpn-as/docker-compose.yml
       service: openvpn-as
+    env_file: 
+      - ./.env
   qbittorrent:
     extends:
       file: ./qbittorrent/docker-compose.yml
       service: qbittorrent
+    env_file: 
+      - ./.env
   wireshark:
     extends:
       file: ./wireshark/docker-compose.yml
       service: wireshark
+    env_file: 
+      - ./.env
   homeassistant:
     extends:
       file: ./homeassistant/docker-compose.yml
       service: homeassistant
+    env_file: 
+      - ./.env

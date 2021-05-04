@@ -5,13 +5,13 @@ services:
     container_name: webtop
     privileged: true #optional
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Australia/Melbourne
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     volumes:
-      - /data/gv0/config/webtop/config:/config
-      - /var/run/docker.sock:/var/run/docker.sock #optional
+      - ${VOL_CONFIG}/webtop/config:/config
+      - ${WEBTOP_DOCKER_SOCK}:/var/run/docker.sock #optional
     ports:
-      - 3000:3000
+      - ${WEBTOP_PORT_3000}:3000
     shm_size: "1gb" #optional
-    restart: unless-stopped
+    restart: ${RESTART_POLICY}

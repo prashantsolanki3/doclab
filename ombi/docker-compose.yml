@@ -1,15 +1,14 @@
-version: "2.1"
+version: "3"
 services:
   ombi:
     image: ghcr.io/linuxserver/ombi
     container_name: ombi
     environment:
-      - PUID=1003
-      - PGID=1003
-      - TZ=Australia/Melbourne
-      - BASE_URL=/ #optional
-    volumes:
-      - /data/gv0/config/ombi/config:/config
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - BASE_URL=${OMBI_BASE_URL} #optional
+    volumes: - ${VOL_CONFIG}/ombi/config:/config
     ports:
-      - 3579:3579
-    restart: unless-stopped
+      - ${OMBI_PORT_3579}:3579
+    restart: ${RESTART_POLICY}

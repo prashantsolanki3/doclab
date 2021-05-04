@@ -6,9 +6,9 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      - PUID=1003
-      - PGID=1003
-      - TZ=Australia/Melbourne
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
       - URL=prashantsolanki.com
       - SUBDOMAINS=www, california, plex, sonarr, radarr,
       - VALIDATION=http
@@ -27,7 +27,7 @@ services:
     ports:
       - "443:443"
       - "80:80" #optional
-    restart: unless-stopped
+    restart: ${RESTART_POLICY}
   # authelia:
   #   image: authelia/authelia:4.21.0
   #   container_name: authelia
@@ -35,18 +35,18 @@ services:
   #     - TZ=Australia/Melbourne
   #   volumes:
   #     - ./data/authelia:/config
-  #   restart: unless-stopped
+  #   restart: ${RESTART_POLICY}
   nextcloud:
     image: ghcr.io/linuxserver/nextcloud
     container_name: nextcloud
     environment:
-      - PUID=1003
-      - PGID=1003
-      - TZ=Australia/Melbourne
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     volumes:
       - /data/config/nextcloud/config:/config
-      - /data/gv0/media:/data/media
+      - ${VOL_MEDIA}:/data/media
       - /data/gv0/documents:/data/documents
     ports:
       - 8443:443
-    restart: unless-stopped
+    restart: ${RESTART_POLICY}

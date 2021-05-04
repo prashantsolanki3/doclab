@@ -6,13 +6,13 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      - PUID=1003
-      - PGID=1003
-      - TZ=Australia/Melbourne
-      - URL=prashantsolanki.com
-      - SUBDOMAINS=www, california, plex, sonarr, radarr, nextcloud,
-      - VALIDATION=http
-      - DOCKER_MODS=linuxserver/mods:swag-ffmpeg|linuxserver/mods:swag-imagemagick|linuxserver/mods:universal-apprise
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - URL=${SWAG_URL}
+      - SUBDOMAINS=${SWAG_SUBDOMAINS}
+      - VALIDATION=${SWAG_VALIDATION}
+      - DOCKER_MODS=${SWAG_DOCKER_MODS}
       # - CERTPROVIDER= #optional
       # - DNSPLUGIN=cloudflare #optional
       # - PROPAGATION= #optional
@@ -23,11 +23,11 @@ services:
       # - STAGING=false #optional
       # - MAXMINDDB_LICENSE_KEY= #optional
     volumes:
-      - /data/gv0/config/swag/config:/config
+      - ${VOL_CONFIG}/swag/config:/config
     ports:
-      - 443:443
-      - 80:80 #optional
-    restart: unless-stopped
+      - ${SWAG_PORT_443}:443
+      - ${SWAG_PORT_80}:80 #optional
+    restart: ${RESTART_POLICY}
   # authelia:
   #   image: authelia/authelia:4.21.0
   #   container_name: authelia
@@ -35,4 +35,4 @@ services:
   #     - TZ=Australia/Melbourne
   #   volumes:
   #     - ./data/authelia:/config
-  #   restart: unless-stopped
+  #   restart: ${RESTART_POLICY}
