@@ -1,0 +1,22 @@
+version: "3"
+services:
+  swag:
+    extends:
+      file: ./swag/docker-compose.yml
+      service: swag
+  openvpn-as:
+    extends:
+      file: ./openvpn-as/docker-compose.yml
+      service: openvpn-as
+  qbittorrent:
+    extends:
+      file: ./qbittorrent/docker-compose.yml
+      service: qbittorrent
+  wireshark:
+    extends:
+      file: ./wireshark/docker-compose.yml
+      service: wireshark
+  homeassistant:
+    extends:
+      file: ./homeassistant/docker-compose.yml
+      service: homeassistant

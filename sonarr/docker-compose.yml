@@ -1,0 +1,17 @@
+version: "3"
+services:
+  sonarr:
+    image: ghcr.io/linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=1003
+      - PGID=1003
+      - TZ=Australia/Melbourne
+    volumes:
+      - /data/gv0/config/sonarr/config:/config
+      - /data/gv0/media/hd/tv:/hd
+      - /data/gv0/media/uhd/tv:/uhd
+      - /data/gv0/media/downloads:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped

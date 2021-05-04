@@ -1,0 +1,17 @@
+version: "3"
+services:
+  radarr:
+    image: ghcr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1003
+      - PGID=1003
+      - TZ=Australia/Melbourne
+    volumes:
+      - /data/gv0/config/radarr/config:/config
+      - /data/gv0/media/hd/movies:/hd
+      - /data/gv0/media/uhd/movies:/uhd
+      - /data/gv0/downloads:/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped

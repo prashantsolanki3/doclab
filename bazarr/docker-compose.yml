@@ -1,0 +1,16 @@
+version: "3"
+services:
+  bazarr:
+    image: ghcr.io/linuxserver/bazarr
+    container_name: bazarr
+    environment:
+      - PUID=1003
+      - PGID=1003
+      - TZ=Australia/Melbourne
+    volumes:
+      - /data/gv0/config/bazarr/config:/config
+      - /data/gv0/media/hd:/hd
+      - /data/gv0/media/uhd:/uhd
+    ports:
+      - 6767:6767
+    restart: unless-stopped
