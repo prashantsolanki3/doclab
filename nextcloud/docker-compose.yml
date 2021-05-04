@@ -4,14 +4,12 @@ services:
     image: ghcr.io/linuxserver/nextcloud
     container_name: nextcloud
     environment:
-      - PUID=1003
-      - PGID=1003
-      - TZ=Australia/Melbourne
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     volumes:
-      - /data/gv0/config/nextcloud/config:/config
-      - /data/gv0/media:/data/media
-      - /data/gv0/documents:/data/documents
-      - /data/gv0/nextcloud:/data/db
-    # ports:
-    #   - 8443:443
-    restart: unless-stopped
+      - ${VOL_CONFIG}/nextcloud/config:/config
+      - ${VOL_DOCUMENTS}/nextcloud:/data
+    ports:
+      - ${NEXTCLOUD_PORT_443}:443
+    restart: ${RESTART_POLICY}

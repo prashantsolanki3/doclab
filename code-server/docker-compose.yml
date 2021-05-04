@@ -4,16 +4,16 @@ services:
     image: ghcr.io/linuxserver/code-server
     container_name: code-server
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Australia/Melbourne
-      # - PASSWORD=password #optional
-      # - HASHED_PASSWORD= #optional
-      # - SUDO_PASSWORD=password #optional
-      # - SUDO_PASSWORD_HASH= #optional
-      # - PROXY_DOMAIN=code-server.my.domain #optional
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - PASSWORD=${CODE_SERVER_PASSWORD} #optional
+      - HASHED_PASSWORD=${CODE_SERVER_HASHED_PASSWORD} #optional
+      - SUDO_PASSWORD=${CODE_SERVER_SUDO_PASSWORD} #optional
+      - SUDO_PASSWORD_HASH=${CODE_SERVER_SUDO_PASSWORD_HASH} #optional
+      - PROXY_DOMAIN=${CODE_SERVER_PROXY_DOMAIN} #optional
     volumes:
-      - /data/gv0/config/code-server/config:/config
+      - ${VOL_CONFIG}/code-server/config:/config
     ports:
-      - 8443:8443
-    restart: unless-stopped
+      - ${CODE_SERVER_PORT_8443}:8443
+    restart: ${RESTART_POLICY}

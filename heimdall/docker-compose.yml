@@ -1,12 +1,12 @@
-version: "2.1"
+version: "3"
 services:
   heimdall:
     image: ghcr.io/linuxserver/heimdall
     container_name: heimdall
     environment:
-      - PUID=1003
-      - PGID=1003
-      - TZ=Australia/Melbourne
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     volumes:
-      - /data/gv0/config/heimdall/config:/config
-    restart: unless-stopped
+      - ${VOL_CONFIG}/heimdall/config:/config
+    restart: ${RESTART_POLICY}

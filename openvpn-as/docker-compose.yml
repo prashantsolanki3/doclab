@@ -1,4 +1,4 @@
-version: "2.1"
+version: "3"
 services:
   openvpn-as:
     image: ghcr.io/linuxserver/openvpn-as
@@ -6,14 +6,13 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Australia/Melbourne
-      - INTERFACE=eth0 #optional
-    volumes:
-      - /data/gv0/config/openvpn-as/config:/config
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - INTERFACE=${OPENVPN_AS_INTERFACE} #optional
+    volumes: - ${VOL_CONFIG}/openvpn-as/config:/config
     ports:
-      - 943:943
-      - 9443:9443
-      - 1194:1194/udp
-    restart: unless-stopped
+      - ${OPENVPN_AS_PORT_943}:943
+      - ${OPENVPN_AS_PORT_9443}:9443
+      - ${OPENVPN_AS_PORT_1194}:1194/udp
+    restart: ${RESTART_POLICY}

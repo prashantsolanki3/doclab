@@ -5,11 +5,11 @@ services:
     container_name: homeassistant
     network_mode: host
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     volumes:
-      - /data/gv0/config/homeassistant/config:/config
+      - ${VOL_CONFIG}/homeassistant/config:/config
     # devices:
     #   - /path/to/device:/path/to/device
-    restart: unless-stopped
+    restart: ${RESTART_POLICY}
