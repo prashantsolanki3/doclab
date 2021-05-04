@@ -1,0 +1,14 @@
+version: "3"
+services:
+  tautulli:
+    image: ghcr.io/linuxserver/tautulli
+    container_name: tautulli
+    environment:
+      - PUID=1003
+      - PGID=1003
+      - TZ=Australia/Melbourne
+    volumes:
+      - /data/gv0/config/plex/config:/config
+    ports:
+      - 8181:8181
+    restart: unless-stopped

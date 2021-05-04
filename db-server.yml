@@ -1,0 +1,17 @@
+version: "3"
+services:
+  mariadb:
+    extends:
+      file: ./mariadb/docker-compose.yml
+      service: mariadb
+  webtop:
+    extends:
+      file: ./webtop/docker-compose.yml
+      service: webtop
+  wikijs:
+    extends:
+      file: ./wikijs/docker-compose.yml
+      service: wikijs
+  code-server:
+    extends: ./code-server/docker-compose.yml
+    service: code-server

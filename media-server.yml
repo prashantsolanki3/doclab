@@ -1,0 +1,49 @@
+version: "3"
+services:
+  plex:
+    extends:
+      file: ./plex/docker-compose.yml
+      service: plex
+  nextcloud:
+    extends:
+      file: ./nextcloud/docker-compose.yml
+      service: nextcloud
+  calibre-web:
+    extends:
+      file: ./calibre-web/docker-compose.yml
+      service: calibre-web
+    depends_on:
+      - calibre
+  calibre:
+    extends:
+      file: ./calibre/docker-compose.yml
+      service: calibre
+  bazarr:
+    extends:
+      file: ./bazarr/docker-compose.yml
+      service: bazarr
+  jackett:
+    extends:
+      file: ./jackett/docker-compose.yml
+      service: jackett
+  ombi:
+    extends:
+      file: ./ombi/docker-compose.yml
+      service: ombi
+  overseerr:
+    extends:
+      file: ./overseerr/docker-compose.yml
+      service: overseerr
+  sonarr:
+    extends:
+      file: ./sonarr/docker-compose.yml
+      service: sonarr
+  radarr:
+    extends:
+      file: ./radarr/docker-compose.yml
+      service: radarr
+  tautulli:
+    extends:
+      file: ./tautulli/docker-compose.yml
+      service: tautulli
+ 

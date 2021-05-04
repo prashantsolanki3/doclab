@@ -1,0 +1,17 @@
+version: "3"
+services:
+  jackett:
+    image: ghcr.io/linuxserver/jackett
+    container_name: jackett
+    environment:
+      - PUID=1003
+      - PGID=1003
+      - TZ=Australia/Melbourne
+      - AUTO_UPDATE=true #optional
+      # - RUN_OPTS=<run options here> #optional
+    volumes:
+      - /data/gv0/config/plex/config:/config
+      - /data/gv0/downloads:/downloads
+    ports:
+      - 9117:9117
+    restart: unless-stopped
