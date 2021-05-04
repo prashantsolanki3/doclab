@@ -30,6 +30,7 @@ services:
       service: fireflyiii
     env_file: 
       - ./fireflyiii.env
+      - ./.env
   spectreimporter:
     extends: 
       file: ./spectreimporter/docker-compose.yml
