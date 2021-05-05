@@ -8,7 +8,7 @@ Make a Development Server - add Development mounts to code server.
 Windows 10 VM
 
 Make domains for:
-wiki, wallet, wireshark, subtitles/bazarr, overseerr,
+subtitles/bazarr, overseerr,
 ombi, music/lidarr, jackett, tautulli, torrent/qbit, calibre, books/calibre-web,
 dev
 Jupyter

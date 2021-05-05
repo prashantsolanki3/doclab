@@ -13,4 +13,6 @@ services:
     volumes:
       - ${VOL_CONFIG}/plex/config:/config
       - ${VOL_MEDIA}:/data/media
+    ports:
+      - 32400:32400
     restart: ${RESTART_POLICY}
