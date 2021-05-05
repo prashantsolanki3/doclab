@@ -9,8 +9,8 @@ services:
       - TZ=${TZ}
     volumes:
       - ${VOL_CONFIG}/sonarr/config:/config
-      - ${VOL_MEDIA}/hd/tv:data/media/hd/tv
-      - ${VOL_MEDIA}/uhd/tv:data/media/uhd/tv
+      - ${VOL_MEDIA}/hd/tv:/data/media/hd/tv
+      - ${VOL_MEDIA}/uhd/tv:/data/media/uhd/tv
       - ${VOL_DOWNLOADS}:/downloads
     ports:
       - ${SONARR_PORT_8989}:8989
