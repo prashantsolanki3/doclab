@@ -11,3 +11,4 @@ Make domains for:
 wiki, wallet, wireshark, subtitles/bazarr, overseerr,
 ombi, music/lidarr, jackett, tautulli, torrent/qbit, calibre, books/calibre-web,
 dev
+Jupyter
