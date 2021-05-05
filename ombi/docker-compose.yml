@@ -8,7 +8,8 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
       - BASE_URL=${OMBI_BASE_URL} #optional
-    volumes: - ${VOL_CONFIG}/ombi/config:/config
+    volumes:
+      - ${VOL_CONFIG}/ombi/config:/config
     ports:
       - ${OMBI_PORT_3579}:3579
     restart: ${RESTART_POLICY}
