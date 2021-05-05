@@ -9,5 +9,3 @@ services:
       - SPECTRE_SECRET=${SPECTRE_IMPORTER_SPECTRE_SECRET}
     ports:
       - ${SPECTRE_IMPORTER_PORT_8080}:8080
-    depends_on:
-      - fireflyiii
