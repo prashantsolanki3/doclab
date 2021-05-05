@@ -12,6 +12,6 @@ services:
       - TZ=${TZ}
     volumes:
       - ${VOL_CONFIG}/wireshark/config:/config
-    ports:
-      - ${WIRESHARK_PORT_3000}:3000 #optional
+    # ports:
+    #   - ${WIRESHARK_PORT_3000}:3000 #optional
     restart: ${RESTART_POLICY}
