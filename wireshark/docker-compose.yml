@@ -10,7 +10,8 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-    volumes: - ${VOL_CONFIG}/wireshark/config:/config
+    volumes:
+      - ${VOL_CONFIG}/wireshark/config:/config
     ports:
       - ${WIRESHARK_PORT_3000}:3000 #optional
     restart: ${RESTART_POLICY}
