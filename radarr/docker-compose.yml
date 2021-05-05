@@ -9,8 +9,8 @@ services:
       - TZ=${TZ}
     volumes:
       - ${VOL_CONFIG}/radarr/config:/config
-      - ${VOL_MEDIA}/hd/movies:/hd
-      - ${VOL_MEDIA}/uhd/movies:/uhd
+      - ${VOL_MEDIA}/hd/movies:data/media/hd/movies
+      - ${VOL_MEDIA}/uhd/movies:data/media/uhd/movies
       - ${VOL_DOWNLOADS}:/downloads
     ports:
       - ${RADARR_PORT_7878}:7878
