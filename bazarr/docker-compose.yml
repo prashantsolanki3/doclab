@@ -9,8 +9,8 @@ services:
       - TZ=${TZ}
     volumes:
       - ${VOL_CONFIG}/bazarr/config:/config
-      - ${VOL_MEDIA}/hd:/hd
-      - ${VOL_MEDIA}/uhd:/uhd
+      - ${VOL_MEDIA}/hd:/data/media/hd
+      - ${VOL_MEDIA}/uhd:/data/media/uhd
     ports:
       - ${BAZARR_PORT_6767}:6767
     restart: ${RESTART_POLICY}
