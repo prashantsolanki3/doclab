@@ -10,6 +10,8 @@ services:
       - TZ=${TZ}
     volumes:
       - ${VOL_CONFIG}/homeassistant/config:/config
-    # devices:
+    ports:
+      - ${HOMEASSISTANT_PORT_8123}:8123
+      # devices:
     #   - /path/to/device:/path/to/device
     restart: ${RESTART_POLICY}
