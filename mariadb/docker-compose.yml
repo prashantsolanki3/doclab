@@ -13,4 +13,6 @@ services:
       - MYSQL_PASSWORD=${MARIADB_MYSQL_PASSWORD}
     volumes:
       - ${VOL_CONFIG}/mariadb/config:/config
+    ports:
+      - 3306:3306
     restart: ${RESTART_POLICY}
