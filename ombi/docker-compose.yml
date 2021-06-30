@@ -3,6 +3,7 @@ services:
   ombi:
     image: ghcr.io/linuxserver/ombi
     container_name: ombi
+    user: ${USER_NAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

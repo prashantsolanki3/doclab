@@ -4,6 +4,7 @@ services:
     image: ghcr.io/linuxserver/syncthing
     container_name: syncthing
     hostname: syncthing
+    user: ${USER_NAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

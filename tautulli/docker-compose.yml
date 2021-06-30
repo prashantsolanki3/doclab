@@ -3,6 +3,7 @@ services:
   tautulli:
     image: ghcr.io/linuxserver/tautulli
     container_name: tautulli
+    user: ${USER_NAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

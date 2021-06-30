@@ -5,6 +5,7 @@ services:
     container_name: openvpn-as
     cap_add:
       - NET_ADMIN
+    user: ${USER_NAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
