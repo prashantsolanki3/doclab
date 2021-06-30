@@ -3,6 +3,7 @@ services:
   calibre-web:
     image: ghcr.io/linuxserver/calibre-web
     container_name: calibre-web
+    user: ${USER_NAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

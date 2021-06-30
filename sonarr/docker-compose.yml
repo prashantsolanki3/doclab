@@ -3,6 +3,7 @@ services:
   sonarr:
     image: ghcr.io/linuxserver/sonarr
     container_name: sonarr
+    user: ${USER_NAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
