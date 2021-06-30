@@ -3,6 +3,7 @@ services:
   heimdall:
     image: ghcr.io/linuxserver/heimdall
     container_name: heimdall
+    user: ${USER_NAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

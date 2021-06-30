@@ -2,6 +2,7 @@ version: "3"
 services:
   spectreimporter:
     image: fireflyiii/spectre-importer:latest
+    user: ${USER_NAME}
     environment:
       - FIREFLY_III_ACCESS_TOKEN=${SPECTRE_IMPORTER_FIREFLY_III_ACCESS_TOKEN}
       - FIREFLY_III_URL=${SPECTRE_IMPORTER_FIREFLY_III_URL}

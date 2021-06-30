@@ -3,6 +3,7 @@ services:
   jackett:
     image: ghcr.io/linuxserver/jackett
     container_name: jackett
+    user: ${USER_NAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
