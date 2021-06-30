@@ -3,6 +3,7 @@ services:
   lidarr:
     image: ghcr.io/linuxserver/lidarr
     container_name: lidarr
+    user: ${USER_NAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

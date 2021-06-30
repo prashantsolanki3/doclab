@@ -3,6 +3,7 @@ services:
   qbittorrent:
     image: ghcr.io/linuxserver/qbittorrent
     container_name: qbittorrent
+    user: ${USER_NAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

@@ -3,6 +3,7 @@ services:
   wikijs:
     image: ghcr.io/linuxserver/wikijs
     container_name: wikijs
+    user: ${USER_NAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

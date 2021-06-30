@@ -4,6 +4,7 @@ services:
     image: ghcr.io/linuxserver/webtop
     container_name: webtop
     privileged: true #optional
+    user: ${USER_NAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

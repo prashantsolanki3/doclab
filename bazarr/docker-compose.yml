@@ -3,6 +3,7 @@ services:
   bazarr:
     image: ghcr.io/linuxserver/bazarr
     container_name: bazarr
+    user: ${USER_NAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
