@@ -28,6 +28,7 @@ services:
       - "443:443"
       - "80:80" #optional
     restart: ${RESTART_POLICY}
+
   # authelia:
   #   image: authelia/authelia:4.21.0
   #   container_name: authelia
@@ -50,3 +51,4 @@ services:
     ports:
       - 8443:443
     restart: ${RESTART_POLICY}
+
