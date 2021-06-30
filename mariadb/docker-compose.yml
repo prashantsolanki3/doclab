@@ -14,5 +14,5 @@ services:
     volumes:
       - ${VOL_CONFIG}/mariadb/config:/config
     ports:
-      - 3306:3306
+      - ${MARIADB_PORT_3306}:3306
     restart: ${RESTART_POLICY}

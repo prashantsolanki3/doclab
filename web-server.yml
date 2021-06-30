@@ -1,11 +1,19 @@
 version: "3"
 services:
+  ddclient:
+    extends: 
+      file: ./ddclient/docker-compose.yml
+      service: ddclient
+    env_file:
+      - ./.env
   swag:
     extends:
       file: ./swag/docker-compose.yml
       service: swag
     env_file: 
       - ./.env
+    depends_on:
+      - ddclient
   openvpn-as:
     extends:
       file: ./openvpn-as/docker-compose.yml
