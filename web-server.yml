@@ -130,7 +130,6 @@ services:
   bazarr:
     image: ghcr.io/linuxserver/bazarr
     container_name: bazarr
-    user: ${USER_NAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -145,7 +144,6 @@ services:
   lidarr:
     image: ghcr.io/linuxserver/lidarr
     container_name: lidarr
-    user: ${USER_NAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
