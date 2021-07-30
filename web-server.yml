@@ -153,5 +153,5 @@ services:
       - ${VOL_MEDIA}/music:/music
       - ${VOL_DOWNLOADS}/music:/downloads
     ports:
-      - ${Lidarr_PORT_8686}:8686
+      - ${LIDARR_PORT_8686}:8686
     restart: ${RESTART_POLICY}
