@@ -123,7 +123,7 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${VOL_CONFIG}/plex/config:/config
+      - ${VOL_CONFIG}/tautulli/config:/config
     ports:
       - ${TAUTULLI_PORT_8181}:8181
     restart: ${RESTART_POLICY}
