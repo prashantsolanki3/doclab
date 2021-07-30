@@ -1,41 +1,56 @@
 version: "3"
 services:
-  # ddclient:
-  #   extends: 
-  #     file: ./ddclient/docker-compose.yml
-  #     service: ddclient
-  #   env_file:
-  #     - ./.env
   swag:
-    extends:
-      file: ./swag/docker-compose.yml
-      service: swag
-    env_file: 
-      - ./.env
-    depends_on:
-      - ddclient
-# Deprecated 
-# openvpn-as:
-  #   extends:
-  #     file: ./openvpn-as/docker-compose.yml
-  #     service: openvpn-as
-  #   env_file: 
-  #     - ./.env
-  qbittorrent:
-    extends:
-      file: ./qbittorrent/docker-compose.yml
-      service: qbittorrent
-    env_file: 
-      - ./.env
-  wireshark:
-    extends:
-      file: ./wireshark/docker-compose.yml
-      service: wireshark
-    env_file: 
-      - ./.env
+    image: ghcr.io/linuxserver/swag
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - URL=${SWAG_URL}
+      - SUBDOMAINS=${SWAG_SUBDOMAINS}
+      - VALIDATION=${SWAG_VALIDATION}
+      - DOCKER_MODS=${SWAG_DOCKER_MODS}
+      # - CERTPROVIDER= #optional
+      # - DNSPLUGIN=cloudflare #optional
+      # - PROPAGATION= #optional
+      # - DUCKDNSTOKEN= #optional
+      - EMAIL=${SWAG_EMAIL}
+      # - ONLY_SUBDOMAINS=false #optional
+      # - EXTRA_DOMAINS= #optional
+      # - STAGING=false #optional
+      # - MAXMINDDB_LICENSE_KEY= #optional
+    volumes:
+      - ${VOL_CONFIG}/swag/config:/config
+    ports:
+      - ${SWAG_PORT_443}:443
+      - ${SWAG_PORT_80}:80 #optional
+    restart: ${RESTART_POLICY}
+
+  # authelia:
+  #   image: authelia/authelia:4.21.0
+  #   container_name: authelia
+  #   environment:
+  #     - TZ=Australia/Melbourne
+  #   volumes:
+  #     - ${VOL_CONFIG}/authelia/config:/config
+  #   restart: ${RESTART_POLICY}
   homeassistant:
-    extends:
-      file: ./homeassistant/docker-compose.yml
-      service: homeassistant
-    env_file: 
-      - ./.env
+    image: ghcr.io/linuxserver/homeassistant
+    container_name: homeassistant
+    network_mode: host
+    user: ${USER_NAME}
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/homeassistant/config:/config
+    # ports:
+    # - ${HOMEASSISTANT_PORT_8123}:8123
+    # devices:
+    #   - /path/to/device:/path/to/device
+    restart: ${RESTART_POLICY}
+
