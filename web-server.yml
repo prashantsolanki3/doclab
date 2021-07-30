@@ -13,30 +13,13 @@ services:
       - SUBDOMAINS=${SWAG_SUBDOMAINS}
       - VALIDATION=${SWAG_VALIDATION}
       - DOCKER_MODS=${SWAG_DOCKER_MODS}
-      # - CERTPROVIDER= #optional
-      # - DNSPLUGIN=cloudflare #optional
-      # - PROPAGATION= #optional
-      # - DUCKDNSTOKEN= #optional
       - EMAIL=${SWAG_EMAIL}
-      # - ONLY_SUBDOMAINS=false #optional
-      # - EXTRA_DOMAINS= #optional
-      # - STAGING=false #optional
-      # - MAXMINDDB_LICENSE_KEY= #optional
     volumes:
       - ${VOL_CONFIG}/swag/config:/config
     ports:
       - ${SWAG_PORT_443}:443
       - ${SWAG_PORT_80}:80 #optional
     restart: ${RESTART_POLICY}
-
-  # authelia:
-  #   image: authelia/authelia:4.21.0
-  #   container_name: authelia
-  #   environment:
-  #     - TZ=Australia/Melbourne
-  #   volumes:
-  #     - ${VOL_CONFIG}/authelia/config:/config
-  #   restart: ${RESTART_POLICY}
   homeassistant:
     image: ghcr.io/linuxserver/homeassistant
     container_name: homeassistant
@@ -47,10 +30,6 @@ services:
       - TZ=${TZ}
     volumes:
       - ${VOL_CONFIG}/homeassistant/config:/config
-    # ports:
-    # - ${HOMEASSISTANT_PORT_8123}:8123
-    # devices:
-    #   - /path/to/device:/path/to/device
     restart: ${RESTART_POLICY}
   ddclient:
     image: ghcr.io/linuxserver/ddclient
@@ -63,4 +42,118 @@ services:
     volumes:
       - ${VOL_CONFIG}/ddclient/config:/config
     restart: ${RESTART_POLICY}
-
+  jackett:
+    image: ghcr.io/linuxserver/jackett
+    container_name: jackett
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - AUTO_UPDATE=${JACKETT_AUTO_UPDATE} #optional
+      # - RUN_OPTS=<run options here> #optional
+    volumes:
+      - ${VOL_CONFIG}/jackett/config:/config
+      - ${VOL_DOWNLOADS}:/downloads
+    ports:
+      - ${JACKETT_PORT_9117}:9117
+    restart: ${RESTART_POLICY}
+  overseerr:
+    image: ghcr.io/linuxserver/overseerr
+    container_name: overseerr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/overseerr/config:/config
+    ports:
+      - ${OVERSEERR_PORT_5055}:5055
+    restart: ${RESTART_POLICY}
+  qbittorrent:
+    image: ghcr.io/linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=${QBITTORRENT_PORT_8080}
+    volumes:
+      - ${VOL_CONFIG}/qbittorrent/config:/config
+      - ${VOL_DOWNLOADS}:/downloads
+    ports:
+      - ${QBITTORRENT_PORT_6881}:6881
+      - ${QBITTORRENT_PORT_6881}:6881/udp
+      - ${QBITTORRENT_PORT_8080}:${QBITTORRENT_PORT_8080}
+    restart: ${RESTART_POLICY}
+  radarr:
+    image: ghcr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/radarr/config:/config
+      - ${VOL_MEDIA}/hd/movies:/data/media/hd/movies
+      - ${VOL_MEDIA}/uhd/movies:/data/media/uhd/movies
+      - ${VOL_DOWNLOADS}:/downloads
+    ports:
+      - ${RADARR_PORT_7878}:7878
+    restart: ${RESTART_POLICY}
+  sonarr:
+    image: ghcr.io/linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/sonarr/config:/config
+      - ${VOL_MEDIA}/hd/tv:/data/media/hd/tv
+      - ${VOL_MEDIA}/uhd/tv:/data/media/uhd/tv
+      - ${VOL_DOWNLOADS}:/downloads
+    ports:
+      - ${SONARR_PORT_8989}:8989
+    restart: ${RESTART_POLICY}
+  tautulli:
+    image: ghcr.io/linuxserver/tautulli
+    container_name: tautulli
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/plex/config:/config
+    ports:
+      - ${TAUTULLI_PORT_8181}:8181
+    restart: ${RESTART_POLICY}
+  bazarr:
+    image: ghcr.io/linuxserver/bazarr
+    container_name: bazarr
+    user: ${USER_NAME}
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/bazarr/config:/config
+      - ${VOL_MEDIA}/hd:/data/media/hd
+      - ${VOL_MEDIA}/uhd:/data/media/uhd
+    ports:
+      - ${BAZARR_PORT_6767}:6767
+    restart: ${RESTART_POLICY}
+  lidarr:
+    image: ghcr.io/linuxserver/lidarr
+    container_name: lidarr
+    user: ${USER_NAME}
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/lidarr/config:/config
+      - ${VOL_MEDIA}/music:/music
+      - ${VOL_DOWNLOADS}/music:/downloads
+    ports:
+      - ${Lidarr_PORT_8686}:8686
+    restart: ${RESTART_POLICY}
