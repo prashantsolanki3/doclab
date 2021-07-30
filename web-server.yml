@@ -1,11 +1,11 @@
 version: "3"
 services:
-  ddclient:
-    extends: 
-      file: ./ddclient/docker-compose.yml
-      service: ddclient
-    env_file:
-      - ./.env
+  # ddclient:
+  #   extends: 
+  #     file: ./ddclient/docker-compose.yml
+  #     service: ddclient
+  #   env_file:
+  #     - ./.env
   swag:
     extends:
       file: ./swag/docker-compose.yml
@@ -14,12 +14,13 @@ services:
       - ./.env
     depends_on:
       - ddclient
-  openvpn-as:
-    extends:
-      file: ./openvpn-as/docker-compose.yml
-      service: openvpn-as
-    env_file: 
-      - ./.env
+# Deprecated 
+# openvpn-as:
+  #   extends:
+  #     file: ./openvpn-as/docker-compose.yml
+  #     service: openvpn-as
+  #   env_file: 
+  #     - ./.env
   qbittorrent:
     extends:
       file: ./qbittorrent/docker-compose.yml
