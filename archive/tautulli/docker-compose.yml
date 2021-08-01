@@ -1,0 +1,15 @@
+version: "3"
+services:
+  tautulli:
+    image: ghcr.io/linuxserver/tautulli
+    container_name: tautulli
+
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/plex/config:/config
+    ports:
+      - ${TAUTULLI_PORT_8181}:8181
+    restart: ${RESTART_POLICY}

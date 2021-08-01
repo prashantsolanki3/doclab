@@ -1,0 +1,13 @@
+version: "3"
+services:
+homeassistant:
+  image: ghcr.io/linuxserver/homeassistant
+  container_name: homeassistant
+  network_mode: host
+  environment:
+    - PUID=${PUID}
+    - PGID=${PGID}
+    - TZ=${TZ}
+  volumes:
+    - ${VOL_CONFIG}/homeassistant/config:/config
+  restart: ${RESTART_POLICY}

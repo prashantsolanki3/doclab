@@ -1,0 +1,18 @@
+version: "3"
+services:
+  radarr:
+    image: ghcr.io/linuxserver/radarr
+    container_name: radarr
+
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/radarr/config:/config
+      - ${VOL_MEDIA}/hd/movies:/data/media/hd/movies
+      - ${VOL_MEDIA}/uhd/movies:/data/media/uhd/movies
+      - ${VOL_DOWNLOADS}:/downloads
+    ports:
+      - ${RADARR_PORT_7878}:7878
+    restart: ${RESTART_POLICY}
