@@ -1,0 +1,12 @@
+version: "3"
+services:
+  spectreimporter:
+    image: fireflyiii/spectre-importer:latest
+
+    environment:
+      - FIREFLY_III_ACCESS_TOKEN=${SPECTRE_IMPORTER_FIREFLY_III_ACCESS_TOKEN}
+      - FIREFLY_III_URL=${SPECTRE_IMPORTER_FIREFLY_III_URL}
+      - SPECTRE_APP_ID=${SPECTRE_IMPORTER_SPECTRE_APP_ID}
+      - SPECTRE_SECRET=${SPECTRE_IMPORTER_SPECTRE_SECRET}
+    ports:
+      - ${SPECTRE_IMPORTER_PORT_8080}:8080

@@ -1,0 +1,18 @@
+version: "3"
+services:
+  webtop:
+    image: ghcr.io/linuxserver/webtop
+    container_name: webtop
+    privileged: true #optional
+
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/webtop/config:/config
+      - ${WEBTOP_DOCKER_SOCK}:/var/run/docker.sock #optional
+    ports:
+      - ${WEBTOP_PORT_3000}:3000
+    shm_size: "1gb" #optional
+    restart: ${RESTART_POLICY}
