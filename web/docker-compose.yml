@@ -43,3 +43,11 @@ services:
     volumes:
       - ${VOL_CONFIG}/heimdall/config:/config
     restart: ${RESTART_POLICY}
+  authelia:
+    image: authelia/authelia:4.21.0
+    container_name: authelia
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/authelia/config:/config
+    restart: ${RESTART_POLICY}
