@@ -50,4 +50,6 @@ services:
       - TZ=${TZ}
     volumes:
       - ${VOL_CONFIG}/authelia/config:/config
+    ports:
+      - 9091:9091
     restart: ${RESTART_POLICY}
