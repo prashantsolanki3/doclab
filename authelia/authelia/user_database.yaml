@@ -1,0 +1,9 @@
+# List of users
+users:
+  prashant:
+    displayname: "Prashant Solanki"
+    password: "$argon2id$v=19$m=1048576,t=1,p=8$MFJSeXh0V2VKVWZEZFJiZg$EOSz2OgjIIV//MWf8"   #hash using docker run authelia/authelia:latest YOURNAME hash-password SOMEPASSWORD
+    email: ***REMOVED***
+    groups:
+      - admins
+      - dev
