@@ -1,0 +1,31 @@
+version: "3"
+services:
+  calibre:
+    image: ghcr.io/linuxserver/calibre
+    container_name: calibre
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - PASSWORD= ${CALIBRE_PASSWORD} #optional
+      - CLI_ARGS= ${CALIBRE_CLI_ARGS} #optional
+    volumes:
+      - ${VOL_CONFIG}/calibre/config:/config
+      - ${VOL_BOOKS}:/books
+    ports:
+      - ${CALIBRE_PORT_8080}:8080
+      - ${CALIBRE_PORT_8081}:8081
+    restart: ${RESTART_POLICY}
+  calibre-web:
+    image: ghcr.io/linuxserver/calibre-web
+    container_name: calibre-web
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/calibre-web/config:/config
+      - ${VOL_BOOKS}:/books
+    ports:
+      - ${CALIBRE_WEB_PORT_8083}:8083
+    restart: ${RESTART_POLICY}
