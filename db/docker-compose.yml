@@ -27,7 +27,7 @@ services:
     volumes:
       - ${VOL_CONFIG}/postgres/config:/var/lib/postgresql/data
     ports:
-      - ${POSTGRES_DB_5432}:5432
+      - ${POSTGRES_PORT_5432}:5432
   adminer:
     image: adminer
     restart: always
