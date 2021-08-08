@@ -53,3 +53,16 @@ services:
     ports:
       - 9091:9091
     restart: ${RESTART_POLICY}
+  nextcloud:
+    image: ghcr.io/linuxserver/nextcloud
+    container_name: nextcloud
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/nextcloud/config:/config
+      - ${VOL_DOCUMENTS}/nextcloud:/data
+    ports:
+      - ${NEXTCLOUD_PORT_443}:443
+    restart: ${RESTART_POLICY}
