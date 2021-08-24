@@ -29,7 +29,7 @@ services:
       - MYSQL_PASSWORD=secret_firefly_password
       - MYSQL_DATABASE=firefly
     volumes:
-      - firefly_iii_db:/var/lib/mysql
+      - ${VOL_CONFIG}/fireflydb/mysql:/var/lib/mysql
   spectreimporter:
     image: fireflyiii/spectre-importer:latest
     environment:
