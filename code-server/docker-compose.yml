@@ -12,6 +12,7 @@ services:
       - SUDO_PASSWORD=${CODE_SERVER_SUDO_PASSWORD}
       - SUDO_PASSWORD_HASH=${CODE_SERVER_SUDO_PASSWORD_HASH}
       - PROXY_DOMAIN=${CODE_SERVER_PROXY_DOMAIN}
+      - DOCKER_MODS=${CODE_SERVER_DOCKER_MODS}
     volumes:
       - ${VOL_DOCKER_SOCK}:/var/run/docker.sock
       - ${VOL_CONFIG}/code-server/config:/config
