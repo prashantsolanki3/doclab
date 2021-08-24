@@ -8,6 +8,7 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
       - HASHED_PASSWORD=${CODE_SERVER_HASHED_PASSWORD}
+      - SUDO_PASSWORD=password
       - SUDO_PASSWORD_HASH=${CODE_SERVER_SUDO_PASSWORD_HASH}
       - PROXY_DOMAIN=${CODE_SERVER_PROXY_DOMAIN}
     volumes:
