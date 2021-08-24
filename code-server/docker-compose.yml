@@ -12,6 +12,7 @@ services:
       - PROXY_DOMAIN=${CODE_SERVER_PROXY_DOMAIN}
     volumes:
       - ${VOL_CONFIG}/code-server/config:/config
+      - ${VOL_PLAYGROUND}:/playground
     ports:
       - ${CODE_SERVER_PORT_8443}:8443
     restart: ${RESTART_POLICY}
