@@ -1,15 +1,3 @@
-# docker run -d \
-# -v firefly_iii_upload:/var/www/html/storage/upload \
-# -p 80:8080 \
-# -e APP_KEY=CHANGEME_32_CHARS \
-# -e DB_HOST=CHANGEME \
-# -e DB_PORT=3306 \
-# -e DB_CONNECTION=mysql \
-# -e DB_DATABASE=CHANGEME \
-# -e DB_USERNAME=CHANGEME \
-# -e DB_PASSWORD=CHANGEME \
-# jc5x/firefly-iii:latest
-
 version: "3"
 
 services:
