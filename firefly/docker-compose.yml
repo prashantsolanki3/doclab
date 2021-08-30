@@ -14,7 +14,7 @@ version: "3"
 
 services:
   fireflyiii:
-    image: jc5x/firefly-iii:latest
+    image: firefly-iii/core:latest
     volumes:
       - ${VOL_CONFIG}/firefly/upload:/var/www/html/storage/upload
     ports:
