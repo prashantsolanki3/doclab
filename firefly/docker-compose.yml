@@ -2,7 +2,7 @@ version: "3"
 
 services:
   fireflyiii:
-    env_file: .env
+    env_file: firefly.env
     image: fireflyiii/core:latest
     volumes:
       - ${VOL_CONFIG}/firefly/upload:/var/www/html/storage/upload
@@ -21,6 +21,7 @@ services:
       - ${VOL_CONFIG}/fireflydb/mysql:/var/lib/mysql
   spectreimporter:
     image: fireflyiii/spectre-importer:latest
+    env_file: spectre.env
     environment:
       - FIREFLY_III_ACCESS_TOKEN=${SPECTRE_IMPORTER_FIREFLY_III_ACCESS_TOKEN}
       - FIREFLY_III_URL=${SPECTRE_IMPORTER_FIREFLY_III_URL}
