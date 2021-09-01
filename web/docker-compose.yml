@@ -15,6 +15,7 @@ services:
       - VALIDATION=${SWAG_VALIDATION}
       - DOCKER_MODS=${SWAG_DOCKER_MODS}
       - EMAIL=${SWAG_EMAIL}
+      - EXTRA_DOMAINS=${SWAG_EXTRA_DOMAINS}
     volumes:
       - ${VOL_CONFIG}/swag/config:/config
     # ports:
