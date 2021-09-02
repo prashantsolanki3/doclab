@@ -3,7 +3,7 @@ version: "3"
 services:
   fireflyiii:
     env_file: firefly.env
-    image: fireflyiii/core:version-5.5.12
+    image: fireflyiii/core:latest
     volumes:
       - ${VOL_CONFIG}/firefly/upload:/var/www/html/storage/upload
     ports:
