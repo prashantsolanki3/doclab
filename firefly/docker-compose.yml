@@ -22,7 +22,7 @@ services:
   spectreimporter:
     image: fireflyiii/spectre-importer:latest
     env_file: spectre.env
-    # network_mode: "host"
+    network_mode: "host"
     # environment:
     #   - FIREFLY_III_ACCESS_TOKEN=${SPECTRE_IMPORTER_FIREFLY_III_ACCESS_TOKEN}
     #   - FIREFLY_III_URL=${SPECTRE_IMPORTER_FIREFLY_III_URL}
