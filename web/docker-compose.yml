@@ -16,6 +16,7 @@ services:
       - DOCKER_MODS=${SWAG_DOCKER_MODS}
       - EMAIL=${SWAG_EMAIL}
       - EXTRA_DOMAINS=${SWAG_EXTRA_DOMAINS}
+      - DNSPLUGIN=${SWAG_DNSPLUGIN}
     volumes:
       - ${VOL_CONFIG}/swag/config:/config
     # ports:
