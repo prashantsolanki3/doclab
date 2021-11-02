@@ -1,0 +1,14 @@
+######
+# https://gabrieltanner.org/blog/ha-kubernetes-cluster-using-k3s
+######
+
+version: "3"
+services:
+  k3s-ha:
+    image: "nginx:mainline"
+    container_name: k3s-ha
+    ports:
+      - ${K3S_HA_PORT_6443}:6443
+    restart: ${RESTART_POLICY}
+    volumes:
+      - ${VOL_CONFIG}/k3s-ha/config/nginx.conf:/etc/nginx/nginx.conf
