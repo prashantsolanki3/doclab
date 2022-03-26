@@ -25,8 +25,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ${VOL_CONFIG}/radarr/config:/config
-      - ${VOL_MEDIA}/hd/movies:/data/media/hd/movies
-      - ${VOL_MEDIA}/uhd/movies:/data/media/uhd/movies
+      - ${VOL_MEDIA}/hd/movies:/media/hd/movies
       - ${VOL_DOWNLOADS}:/downloads
     ports:
       - ${RADARR_PORT_7878}:7878
@@ -40,11 +39,38 @@ services:
       - TZ=${TZ}
     volumes:
       - ${VOL_CONFIG}/sonarr/config:/config
-      - ${VOL_MEDIA}/hd/tv:/data/media/hd/tv
-      - ${VOL_MEDIA}/uhd/tv:/data/media/uhd/tv
+      - ${VOL_MEDIA}/hd/tv:/media/hd/tv
       - ${VOL_DOWNLOADS}:/downloads
     ports:
       - ${SONARR_PORT_8989}:8989
+    restart: ${RESTART_POLICY}
+  radarr-uhd:
+    image: ghcr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/radarr/config:/config
+      - ${VOL_MEDIA}/uhd/movies:/media/uhd/movies
+      - ${VOL_DOWNLOADS}:/downloads
+    ports:
+      - ${RADARR_UHD_PORT_7878}:7878
+    restart: ${RESTART_POLICY}
+  sonarr-uhd:
+    image: ghcr.io/linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/sonarr/config:/config
+      - ${VOL_MEDIA}/uhd/tv:/media/uhd/tv
+      - ${VOL_DOWNLOADS}:/downloads
+    ports:
+      - ${SONARR_UHD_PORT_8989}:8989
     restart: ${RESTART_POLICY}
   tautulli:
     image: ghcr.io/linuxserver/tautulli
@@ -67,8 +93,8 @@ services:
       - TZ=${TZ}
     volumes:
       - ${VOL_CONFIG}/bazarr/config:/config
-      - ${VOL_MEDIA}/hd:/data/media/hd
-      - ${VOL_MEDIA}/uhd:/data/media/uhd
+      - ${VOL_MEDIA}/hd:/media/hd
+      - ${VOL_MEDIA}/uhd:/media/uhd
     ports:
       - ${BAZARR_PORT_6767}:6767
     restart: ${RESTART_POLICY}
