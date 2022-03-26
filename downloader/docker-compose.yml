@@ -46,7 +46,7 @@ services:
     restart: ${RESTART_POLICY}
   radarr-uhd:
     image: ghcr.io/linuxserver/radarr
-    container_name: radarr
+    container_name: radarr-uhd
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -60,7 +60,7 @@ services:
     restart: ${RESTART_POLICY}
   sonarr-uhd:
     image: ghcr.io/linuxserver/sonarr
-    container_name: sonarr
+    container_name: sonarr-uhd
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
