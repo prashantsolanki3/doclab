@@ -52,7 +52,7 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${VOL_CONFIG}/radarr/config:/config
+      - ${VOL_CONFIG}/radarr-uhd/config:/config
       - ${VOL_MEDIA}/uhd/movies:/media/uhd/movies
       - ${VOL_DOWNLOADS}:/downloads
     ports:
@@ -66,7 +66,7 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${VOL_CONFIG}/sonarr/config:/config
+      - ${VOL_CONFIG}/sonarr-uhd/config:/config
       - ${VOL_MEDIA}/uhd/tv:/media/uhd/tv
       - ${VOL_DOWNLOADS}:/downloads
     ports:
