@@ -139,3 +139,18 @@ services:
     ports:
       - ${OVERSEERR_PORT_5055}:5055
     restart: ${RESTART_POLICY}
+nzbget:
+    image: lscr.io/linuxserver/nzbget
+    container_name: nzbget
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - NZBGET_USER=${NZBGET_USER} 
+      - NZBGET_PASS=${NZBGET_PASS} 
+    volumes:
+      - ${VOL_CONFIG}/jackett/config:/config
+      - ${VOL_DOWNLOADS}:/downloads
+    ports:
+      - ${JACKETT_PORT_9117}:6789
+    restart:  ${RESTART_POLICY}
