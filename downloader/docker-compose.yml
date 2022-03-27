@@ -139,7 +139,7 @@ services:
     ports:
       - ${OVERSEERR_PORT_5055}:5055
     restart: ${RESTART_POLICY}
-nzbget:
+  nzbget:
     image: lscr.io/linuxserver/nzbget
     container_name: nzbget
     environment:
