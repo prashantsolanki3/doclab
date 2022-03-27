@@ -149,7 +149,7 @@ nzbget:
       - NZBGET_USER=${NZBGET_USER} 
       - NZBGET_PASS=${NZBGET_PASS} 
     volumes:
-      - ${VOL_CONFIG}/jackett/config:/config
+      - ${VOL_CONFIG}/nzbget/config:/config
       - ${VOL_DOWNLOADS}:/downloads
     ports:
       - ${JACKETT_PORT_9117}:6789
