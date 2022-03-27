@@ -152,5 +152,5 @@ nzbget:
       - ${VOL_CONFIG}/nzbget/config:/config
       - ${VOL_DOWNLOADS}:/downloads
     ports:
-      - ${JACKETT_PORT_9117}:6789
+      - ${NZBGET_PORT_6789}:6789
     restart:  ${RESTART_POLICY}
