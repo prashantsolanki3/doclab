@@ -1,15 +1,15 @@
 version: "3"
-
 services:
   fireflyiii:
     env_file: firefly.env
     image: fireflyiii/core:latest
     volumes:
-      - ${VOL_CONFIG}/firefly/upload:/var/www/html/storage/upload
+      - ${VOL_VAULT}/firefly/upload:/var/www/html/storage/upload
     ports:
       - ${FIREFLY_III_PORT_8080}:8080
     depends_on:
       - fireflyiiidb
+    restart: ${RESTART_POLICY}
   fireflyiiidb:
     image: mariadb
     environment:
@@ -18,11 +18,13 @@ services:
       - MYSQL_PASSWORD=secret_firefly_password
       - MYSQL_DATABASE=firefly
     volumes:
-      - ${VOL_CONFIG}/fireflydb/mysql:/var/lib/mysql
+      - ${VOL_VAULT}/fireflydb/mysql:/var/lib/mysql
+    restart: ${RESTART_POLICY}
   spectreimporter:
     image: fireflyiii/spectre-importer:latest
     env_file: spectre.env
     network_mode: "host"
+    restart: ${RESTART_POLICY}
     # environment:
     #   - FIREFLY_III_ACCESS_TOKEN=${SPECTRE_IMPORTER_FIREFLY_III_ACCESS_TOKEN}
     #   - FIREFLY_III_URL=${SPECTRE_IMPORTER_FIREFLY_III_URL}
@@ -30,3 +32,11 @@ services:
     #   - SPECTRE_SECRET=${SPECTRE_IMPORTER_SPECTRE_SECRET}
     # ports:
     #   - ${SPECTRE_IMPORTER_PORT_8080}:8080
+  vaultwarden:
+    image: vaultwarden/server:latest
+    volumes:
+      - ${VOL_VAULT}/vaultwarden/config:/data
+    ports:
+      - ${VAULTWARDEN_PORT_8080}:80
+    restart: ${RESTART_POLICY}
+
