@@ -53,7 +53,24 @@ services:
     volumes:
       - ${VOL_CONFIG}/authelia/config:/config
     ports:
-      - 9091:9091
+      - ${AUTHELIA_PORT_9091}:9091
+    restart: ${RESTART_POLICY}
+  endlessh:
+    image: lscr.io/linuxserver/endlessh
+    container_name: endlessh
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - MSDELAY=${MSDELAY}10000 #optional
+      - MAXLINES=32 #optional
+      - MAXCLIENTS=4096 #optional
+      - LOGFILE=false #optional
+      - BINDFAMILY= #optional
+    volumes:
+      - ${VOL_CONFIG}/endlessh/config:/config
+    ports:
+      - ${ENDLESSH_PORT_2222}:2222
     restart: ${RESTART_POLICY}
   # nextcloud:
   #   image: ghcr.io/linuxserver/nextcloud
