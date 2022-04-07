@@ -1,0 +1,27 @@
+version: "3"
+services:
+  homeassistant:
+    image: ghcr.io/linuxserver/homeassistant
+    container_name: homeassistant
+    network_mode: host
+    env_file: .env
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/homeassistant/config:/config
+    restart: ${RESTART_POLICY}
+  grocy:
+    image: lscr.io/linuxserver/grocy
+    container_name: grocy
+    env_file: .env
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/grocy/config:/config
+    restart: ${RESTART_POLICY}
+    ports:
+      - ${GROCY_PORT_80}:80
