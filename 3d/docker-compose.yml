@@ -1,0 +1,20 @@
+version: "3"
+services:
+  blender:
+    image: lscr.io/linuxserver/blender
+    container_name: blender
+    security_opt:
+      - seccomp:unconfined #optional
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - SUBFOLDER=${BLENDER_SUBFOLDER}
+      - KEYBOARD=${BLENDER_KEYBOARD}
+    volumes:
+      - ${VOL_CONFIG}/blender/config:/config
+    ports:
+      - ${BLENDER_PORT_3000}:3000
+    #devices:
+    #  - /dev/dri:/dev/dri #optional
+    restart: ${RESTART_POLICY}

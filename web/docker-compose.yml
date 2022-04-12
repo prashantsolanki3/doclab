@@ -59,14 +59,14 @@ services:
     image: lscr.io/linuxserver/endlessh
     container_name: endlessh
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
-      - MSDELAY=${MSDELAY}10000 #optional
-      - MAXLINES=32 #optional
-      - MAXCLIENTS=4096 #optional
-      - LOGFILE=false #optional
-      - BINDFAMILY= #optional
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - MSDELAY=${ESSH_MSDELAY}
+      - MAXLINES=${ESSH_MAXLINES}
+      - MAXCLIENTS=$[ESSH_MAXCLIENTS}
+      - LOGFILE=${ESSH_LOGFILE}
+      - BINDFAMILY=$[ESSH_BINDFAMILY}
     volumes:
       - ${VOL_CONFIG}/endlessh/config:/config
     ports:
@@ -86,3 +86,23 @@ services:
   #   ports:
   #     - ${NEXTCLOUD_PORT_443}:443
   #   restart: ${RESTART_POLICY}
+  librespeed:
+    image: lscr.io/linuxserver/librespeed
+    container_name: librespeed
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - PASSWORD=PASSWORD
+      - CUSTOM_RESULTS=false
+      - DB_TYPE=${LS_DB_TYPE}
+      - DB_NAME=${LS_DB_NAME}
+      - DB_HOSTNAME=$[LS_DB_HOSTNAME}
+      - DB_USERNAME=${LS_DB_USERNAME}
+      - DB_PASSWORD=${LS_DB_PASSWORD}
+      - DB_PORT=${LS_DB_PORT}
+    volumes:
+      - /path/to/appdata/config:/config
+    ports:
+      - ${LS_DB_PORT}:${LS_DB_PORT}
+    restart: ${RESTART_POLICY}
