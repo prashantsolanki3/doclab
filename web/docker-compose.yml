@@ -102,7 +102,7 @@ services:
       - DB_PASSWORD=${LS_DB_PASSWORD}
       - DB_PORT=${LS_DB_PORT}
     volumes:
-      - /path/to/appdata/config:/config
+      - ${VOL_CONFIG}/librespeed/config:/config
     ports:
       - ${LS_DB_PORT}:${LS_DB_PORT}
     restart: ${RESTART_POLICY}
