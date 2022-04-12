@@ -20,3 +20,17 @@ services:
     ports:
       - ${CODE_SERVER_PORT_8443}:8443
     restart: ${RESTART_POLICY}
+  mysql-workbench:
+    image: lscr.io/linuxserver/mysql-workbench
+    container_name: mysql-workbench
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/mysql-workbench/config:/config
+    ports:
+      - ${MYSQL_WB_PORT_3000}:3000
+    cap_add:
+      - IPC_LOCK
+    restart: ${RESTART_POLICY}
