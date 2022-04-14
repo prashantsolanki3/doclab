@@ -4,32 +4,13 @@ services:
     image: ghcr.io/linuxserver/mariadb
     container_name: mariadb
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
       - MYSQL_ROOT_PASSWORD=${MARIADB_MYSQL_ROOT_PASSWORD}
-      - TZ=${TZ}
       - MYSQL_DATABASE=${MARIADB_MYSQL_DATABASE}
       - MYSQL_USER=${MARIADB_MYSQL_USER}
       - MYSQL_PASSWORD=${MARIADB_MYSQL_PASSWORD}
     volumes:
       - ${VOL_CONFIG}/mariadb/config:/config
+      - ${VOL_DATA}/mariadb/databases:/config/databases
     ports:
       - ${MARIADB_PORT_3306}:3306
     restart: ${RESTART_POLICY}
-  postgres:
-    image: postgres
-    restart: ${RESTART_POLICY}
-    environment:
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - PGDATA=/var/lib/postgresql/data/pgdata
-    volumes:
-      - ${VOL_CONFIG}/postgres/config:/var/lib/postgresql/data
-    ports:
-      - ${POSTGRES_PORT_5432}:5432
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080

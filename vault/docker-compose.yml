@@ -4,7 +4,7 @@ services:
     env_file: firefly.env
     image: fireflyiii/core:latest
     volumes:
-      - ${VOL_VAULT}/firefly/upload:/var/www/html/storage/upload
+      - ${VOL_CONFIG}/firefly/upload:/var/www/html/storage/upload
     ports:
       - ${FIREFLY_III_PORT_8080}:8080
     depends_on:
@@ -18,7 +18,7 @@ services:
       - MYSQL_PASSWORD=secret_firefly_password
       - MYSQL_DATABASE=firefly
     volumes:
-      - ${VOL_VAULT}/fireflydb/mysql:/var/lib/mysql
+      - ${VOL_CONFIG}/fireflydb/mysql:/var/lib/mysql
     restart: ${RESTART_POLICY}
   spectreimporter:
     image: fireflyiii/spectre-importer:latest
@@ -35,8 +35,38 @@ services:
   vaultwarden:
     image: vaultwarden/server:latest
     volumes:
-      - ${VOL_VAULT}/vaultwarden/config:/data
+      - ${VOL_CONFIG}/vaultwarden/config:/data
     ports:
       - ${VAULTWARDEN_PORT_8080}:80
     restart: ${RESTART_POLICY}
-
+  paperless-ngx:
+    image: lscr.io/linuxserver/paperless-ngx
+    container_name: paperless-ngx
+    environment:
+      - REDIS_URL=${PAPERLESS_NGX_REDIS_URL}
+    volumes:
+      - ${VOL_CONFIG}/paperless-ngx/config:/config
+      - ${VOL_DATA}/paperless-ngx/data:/data
+    ports:
+      - ${PAPERLESS_NGX_PORT_8000}:8000
+    restart: ${RESTART_POLICY}
+  hedgedoc:
+    image: lscr.io/linuxserver/hedgedoc:latest
+    container_name: hedgedoc
+    depends_on:
+      - mariadb
+    volumes:
+      -  ${VOL_CONFIG}/hedgedoc/config:/config
+    environment:
+      - DB_HOST=${HEDGEDOC_DB_HOST}
+      - DB_USER=${HEDGEDOC_DB_USER}
+      - DB_PASS=${HEDGEDOC_DB_PASS}
+      - DB_NAME=${HEDGEDOC_DB_NAME}
+      - DB_PORT=${HEDGEDOC_DB_PORT}
+      - CMD_DOMAIN=${HEDGEDOC_CMD_DOMAIN}
+      - CMD_URL_ADDPORT=${HEDGEDOC_CMD_URL_ADDPORT}
+      - CMD_PROTOCOL_USESSL=${HEDGEDOC_CMD_PROTOCOL_USESSL}
+      - CMD_PORT=3000
+    ports:
+      - ${HEDGEDOC_CMD_PORT}:3000
+    restart: ${RESTART_POLICY}
