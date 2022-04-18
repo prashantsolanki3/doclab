@@ -14,3 +14,26 @@ services:
     ports:
       - ${MARIADB_PORT_3306}:3306
     restart: ${RESTART_POLICY}
+  redis-master:
+    image: bitnami/redis:latest
+    ports:
+      - ${REDIS_PORT_6379}:6379
+    environment:
+      - REDIS_REPLICATION_MODE=master
+      - REDIS_PASSWORD=${REDIS_MASTER_PASSWORD}
+    volumes:
+      - ${VOL_DATA}/redis-master/bitnami:/bitnami
+    restart: ${RESTART_POLICY}
+  redis-replica:
+    image: bitnami/redis:latest
+    ports:
+      - ${REDIS_SLAVE_PORT_6379=}:6379
+    depends_on:
+      - redis-master
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_MASTER_PORT_NUMBER=${REDIS_PORT_6379}
+      - REDIS_MASTER_PASSWORD=${REDIS_MASTER_PASSWORD}
+      - REDIS_PASSWORD=${REDIS_SLAVE_PASSWORD}
+    restart: ${RESTART_POLICY}
