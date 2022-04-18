@@ -27,7 +27,7 @@ services:
   redis-replica:
     image: bitnami/redis:latest
     ports:
-      - ${REDIS_SLAVE_PORT_6379=}:6379
+      - ${REDIS_SLAVE_PORT_6379}:6379
     depends_on:
       - redis-master
     environment:
