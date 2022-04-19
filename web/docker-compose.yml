@@ -64,9 +64,9 @@ services:
       - TZ=${TZ}
       - MSDELAY=${ESSH_MSDELAY}
       - MAXLINES=${ESSH_MAXLINES}
-      - MAXCLIENTS=$[ESSH_MAXCLIENTS}
+      - MAXCLIENTS=${ESSH_MAXCLIENTS}
       - LOGFILE=${ESSH_LOGFILE}
-      - BINDFAMILY=$[ESSH_BINDFAMILY}
+      - BINDFAMILY=${ESSH_BINDFAMILY}
     volumes:
       - ${VOL_CONFIG}/endlessh/config:/config
     ports:
@@ -97,7 +97,7 @@ services:
       - CUSTOM_RESULTS=false
       - DB_TYPE=${LS_DB_TYPE}
       - DB_NAME=${LS_DB_NAME}
-      - DB_HOSTNAME=$[LS_DB_HOSTNAME}
+      - DB_HOSTNAME=${LS_DB_HOSTNAME}
       - DB_USERNAME=${LS_DB_USERNAME}
       - DB_PASSWORD=${LS_DB_PASSWORD}
       - DB_PORT=${LS_DB_PORT}
