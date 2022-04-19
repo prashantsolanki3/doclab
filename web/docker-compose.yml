@@ -104,5 +104,5 @@ services:
     volumes:
       - ${VOL_CONFIG}/librespeed/config:/config
     ports:
-      - ${LS_DB_PORT}:${LS_DB_PORT}
+      - ${LS_PORT_80}:80
     restart: ${RESTART_POLICY}
