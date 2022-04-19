@@ -22,7 +22,7 @@ services:
       - REDIS_REPLICATION_MODE=master
       - REDIS_PASSWORD=${REDIS_MASTER_PASSWORD}
     volumes:
-      # - ${VOL_CONFIG}/redis-master/config:/opt/bitnami/redis/mounted-etc
+      - ${VOL_CONFIG}/redis-master/config:/opt/bitnami/redis/mounted-etc
       - ${VOL_DATA}/redis-master/bitnami:/bitnami
     restart: ${RESTART_POLICY}
   redis-replica:
@@ -31,8 +31,8 @@ services:
       - ${REDIS_SLAVE_PORT_6379}:6379
     depends_on:
       - redis-master
-    # volumes:
-      # - ${VOL_CONFIG}/redis-replica/config:/opt/bitnami/redis/mounted-etc
+    volumes:
+      - ${VOL_CONFIG}/redis-replica/config:/opt/bitnami/redis/mounted-etc
     environment:
       - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis-master
