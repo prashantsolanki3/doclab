@@ -23,6 +23,7 @@ services:
     #   - ${SWAG_PORT_443}:443
     #   - ${SWAG_PORT_80}:80 #optional
     restart: ${RESTART_POLICY}
+    # TODO: Not working correctly with duckdns
   ddclient:
     image: ghcr.io/linuxserver/ddclient
     container_name: ddclient
@@ -34,17 +35,18 @@ services:
     volumes:
       - ${VOL_CONFIG}/ddclient/config:/config
     restart: ${RESTART_POLICY}
-  heimdall:
-    image: ghcr.io/linuxserver/heimdall
-    container_name: heimdall
-
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    volumes:
-      - ${VOL_CONFIG}/heimdall/config:/config
-    restart: ${RESTART_POLICY}
+  # heimdall:
+  #   image: ghcr.io/linuxserver/heimdall
+  #   container_name: heimdall
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #   ports:
+  #     - ${HEIMDALL_PORT_80}:80
+  #   volumes:
+  #     - ${VOL_CONFIG}/heimdall/config:/config
+  #   restart: ${RESTART_POLICY}
   authelia:
     image: authelia/authelia:4.21.0
     container_name: authelia
