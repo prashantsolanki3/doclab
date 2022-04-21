@@ -30,8 +30,5 @@ services:
     container_name: "mqtt"
     restart: ${RESTART_POLICY}
     network_mode: host
-    ports:
-      - ${MQTT_PORT_1883}:1883
-      - ${MQTT_PORT_9001}:9001
     volumes:
       - ${VOL_CONFIG}/mqtt/config:/mosquitto
