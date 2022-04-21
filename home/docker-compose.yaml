@@ -30,5 +30,5 @@ services:
     container_name: "mqtt"
     restart: ${RESTART_POLICY}
     network_mode: host
-    volumes:
-      - ${VOL_CONFIG}/mqtt/config:/mosquitto
+    # volumes:
+      # - ${VOL_CONFIG}/mqtt/config:/mosquitto
