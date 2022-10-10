@@ -1,63 +1,70 @@
-version: "3"
+version: "3.7"
 services:
   fireflyiii:
     env_file: firefly.env
     image: fireflyiii/core:latest
     volumes:
-      - ${VOL_CONFIG}/firefly/upload:/var/www/html/storage/upload
+      - ${VOL_CONFIG}/fireflyiii/upload:/var/www/html/storage/upload
     ports:
       - ${FIREFLY_III_PORT_8080}:8080
-    depends_on:
-      - fireflyiiidb
+    networks:
+      - db
+      - intranet
     restart: ${RESTART_POLICY}
-  fireflyiiidb:
-    image: mariadb
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=yes
-      - MYSQL_USER=firefly
-      - MYSQL_PASSWORD=secret_firefly_password
-      - MYSQL_DATABASE=firefly
-    volumes:
-      - ${VOL_CONFIG}/fireflydb/mysql:/var/lib/mysql
+  fidi:
+    image: fireflyiii/data-importer:latest
+    env_file: fidi.env
     restart: ${RESTART_POLICY}
-  spectreimporter:
-    image: fireflyiii/spectre-importer:latest
-    env_file: spectre.env
-    network_mode: "host"
-    restart: ${RESTART_POLICY}
-    # environment:
-    #   - FIREFLY_III_ACCESS_TOKEN=${SPECTRE_IMPORTER_FIREFLY_III_ACCESS_TOKEN}
-    #   - FIREFLY_III_URL=${SPECTRE_IMPORTER_FIREFLY_III_URL}
-    #   - SPECTRE_APP_ID=${SPECTRE_IMPORTER_SPECTRE_APP_ID}
-    #   - SPECTRE_SECRET=${SPECTRE_IMPORTER_SPECTRE_SECRET}
-    # ports:
-    #   - ${SPECTRE_IMPORTER_PORT_8080}:8080
+    ports:
+      - ${FIDI_PORT_8080}:8080
+    networks:
+      - db
+      - intranet
   vaultwarden:
+    user: "${PUID}:${PGID}"
     image: vaultwarden/server:latest
-    volumes:
-      - ${VOL_CONFIG}/vaultwarden/config:/data
-    ports:
-      - ${VAULTWARDEN_PORT_8080}:80
-    restart: ${RESTART_POLICY}
-  paperless-ngx:
-    image: lscr.io/linuxserver/paperless-ngx
-    container_name: paperless-ngx
     environment:
-      - REDIS_URL=${PAPERLESS_NGX_REDIS_URL}
+      - DATABASE_URL=${DATABASE_URL}
     volumes:
-      - ${VOL_CONFIG}/paperless-ngx/config:/config
-      - ${VOL_DATA}/paperless-ngx/data:/data
-    ports:
-      - ${PAPERLESS_NGX_PORT_8000}:8000
+      - ${VOL_CONFIG}/vaultwarden:/data
+    # ports:
+    #   - ${VAULTWARDEN_PORT_8080}:80
     restart: ${RESTART_POLICY}
+    networks:
+      - intranet
+      - db
+  papermerge:
+    image: lscr.io/linuxserver/papermerge:latest
+    container_name: papermerge
+    # user: "1000:1000"
+    environment:
+      # - PUID=1000
+      # - PGID=${PGID}
+      - TZ=${TZ}
+      - REDIS_URL=${PAPERMERGE_REDIS_URL}
+      - DB_USER=${PAPERMERGE_DB_USER}
+      - DB_NAME=${PAPERMERGE_DB_NAME}
+      - DB_PASSWORD=${PAPERMERGE_DB_PASSWORD}
+      - DB_HOST=${PAPERMERGE_DB_HOST}
+      - DB_PORT=${PAPERMERGE_DB_PORT}
+    volumes:
+      - ${VOL_CONFIG}/papermerge/config:/config
+      - ${VOL_CONFIG}/papermerge/data:/data
+    ports:
+      - ${PAPERMERGE_PORT_8000}:8000
+    restart: ${RESTART_POLICY}
+    networks:
+      - db
+      - intranet
   hedgedoc:
     image: lscr.io/linuxserver/hedgedoc:latest
     container_name: hedgedoc
-    depends_on:
-      - mariadb
     volumes:
-      -  ${VOL_CONFIG}/hedgedoc/config:/config
+      - ${VOL_CONFIG}/hedgedoc:/config
     environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
       - DB_HOST=${HEDGEDOC_DB_HOST}
       - DB_USER=${HEDGEDOC_DB_USER}
       - DB_PASS=${HEDGEDOC_DB_PASS}
@@ -66,7 +73,16 @@ services:
       - CMD_DOMAIN=${HEDGEDOC_CMD_DOMAIN}
       - CMD_URL_ADDPORT=${HEDGEDOC_CMD_URL_ADDPORT}
       - CMD_PROTOCOL_USESSL=${HEDGEDOC_CMD_PROTOCOL_USESSL}
-      - CMD_PORT=3000
+      - CMD_PORT=${HEDGEDOC_CMD_PORT}
     ports:
-      - ${HEDGEDOC_CMD_PORT}:3000
+      - ${HEDGEDOC_CMD_PORT}:${HEDGEDOC_CMD_PORT}
     restart: ${RESTART_POLICY}
+    networks:
+      - intranet
+      - db
+
+networks:
+  db:
+    external: true
+  intranet:
+    external: true

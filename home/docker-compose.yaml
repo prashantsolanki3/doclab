@@ -1,17 +1,18 @@
-version: "3"
+version: "3.7"
 services:
   homeassistant:
     image: ghcr.io/linuxserver/homeassistant
     container_name: homeassistant
-    network_mode: host
     env_file: .env
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${VOL_CONFIG}/homeassistant/config:/config
+      - ${VOL_CONFIG}/homeassistant:/config
     restart: ${RESTART_POLICY}
+    networks:
+      - intranet
   grocy:
     image: lscr.io/linuxserver/grocy
     container_name: grocy
@@ -21,14 +22,24 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${VOL_CONFIG}/grocy/config:/config
+      - ${VOL_CONFIG}/grocy:/config
     restart: ${RESTART_POLICY}
-    ports:
-      - ${GROCY_PORT_80}:80
+    # ports:
+    #   - ${GROCY_PORT_80}:80
+    networks:
+      - intranet
   mqtt:
     image: eclipse-mosquitto:latest
     container_name: "mqtt"
     restart: ${RESTART_POLICY}
-    network_mode: host
     volumes:
-      - ${VOL_CONFIG}/mqtt/config:/mosquitto
+      - ${VOL_CONFIG}/mqtt:/mosquitto
+    networks:
+      - intranet
+    # ports:
+    #   - 1883:1883
+    #   - 9001:9001
+
+networks:
+  intranet:
+    external: true

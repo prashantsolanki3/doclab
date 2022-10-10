@@ -1,9 +1,9 @@
-version: "3"
+version: "3.7"
 services:
+
   plex:
     image: ghcr.io/linuxserver/plex
     container_name: plex
-    network_mode: host
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -11,6 +11,195 @@ services:
       - VERSION=${PLEX_VERSION}
       - PLEX_CLAIM=${PLEX_CLAIM}
     volumes:
-      - ${VOL_CONFIG}/plex/config:/config
-      - ${VOL_MEDIA}:/data/media
+      - ${VOL_CONFIG}/plex:/config
+      - media:/media
+    ports:
+      - 32469:32469
+      - 32400:32400
+      - 32401:32401
+      - 3005:3005
+      - 8324:8324
+      - 1900:1900/udp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
     restart: ${RESTART_POLICY}
+    networks:
+      - intranet
+
+  deluge:
+    image: lscr.io/linuxserver/deluge:latest
+    container_name: deluge
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/deluge:/config
+      - downloads:/downloads
+    ports:
+      # - 8112:8112
+      - 6881:6881
+      - 6881:6881/udp
+    restart: ${RESTART_POLICY}
+    networks:
+      - intranet
+    # qbittorrent:
+    #   image: ghcr.io/linuxserver/qbittorrent
+    #   container_name: qbittorrent
+    #   environment:
+    #     - PUID=${PUID}
+    #     - PGID=${PGID}
+    #     - TZ=${TZ}
+    #     - WEBUI_PORT=8080
+    #   volumes:
+    #     - ${VOL_CONFIG}/qbittorrent:/config
+    #     - downloads:/downloads
+    # ports:
+    #   - ${QBITTORRENT_PORT_6881}:6881
+    #   - ${QBITTORRENT_PORT_6881}:6881/udp
+    #   - ${QBITTORRENT_PORT_8080}:${QBITTORRENT_PORT_8080}
+    # restart: ${RESTART_POLICY}
+    # networks:
+    #   - intranet
+
+  radarr:
+    image: ghcr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/radarr:/config
+      - media:/media
+      - downloads:/downloads
+    restart: ${RESTART_POLICY}
+    networks:
+      - intranet
+
+  sonarr:
+    image: ghcr.io/linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/sonarr:/config
+      - media:/media
+      - downloads:/downloads
+    restart: ${RESTART_POLICY}
+    networks:
+      - intranet
+  # TODO
+  # bazarr:
+  #   image: ghcr.io/linuxserver/bazarr
+  #   container_name: bazarr
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #   volumes:
+  #     - ${VOL_CONFIG}/bazarr:/config
+  #     - media:/media
+  #   # ports:
+  #   #   - ${BAZARR_PORT_6767}:6767
+  #   restart: ${RESTART_POLICY}
+  #   networks:
+  #     - intranet
+
+  lidarr:
+    image: ghcr.io/linuxserver/lidarr
+    container_name: lidarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/lidarr:/config
+      - media:/media
+      - downloads:/downloads
+    # ports:
+    #   - ${LIDARR_PORT_8686}:8686
+    restart: ${RESTART_POLICY}
+    networks:
+      - intranet
+  # jackett:
+  #   image: ghcr.io/linuxserver/jackett
+  #   container_name: jackett
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #     - AUTO_UPDATE=${JACKETT_AUTO_UPDATE} #optional
+  #     # - RUN_OPTS=<run options here> #optional
+  #   volumes:
+  #     - ${VOL_CONFIG}/jackett:/config
+  #     - downloads:/downloads
+  #   # ports:
+  #   #   - ${JACKETT_PORT_9117}:9117
+  #   restart: ${RESTART_POLICY}
+  #   networks:
+  #     - intranet
+
+
+  overseerr:
+    image: ghcr.io/linuxserver/overseerr
+    container_name: overseerr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/overseerr:/config
+      - media:/media
+      - downloads:/downloads
+    restart: ${RESTART_POLICY}
+    networks:
+      - intranet
+
+  prowlarr:
+    image: ghcr.io/linuxserver/prowlarr:develop
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${VOL_CONFIG}/prowlarr:/config
+    restart: ${RESTART_POLICY}
+    networks:
+      - intranet
+  # nzbget:
+  #   image: lscr.io/linuxserver/nzbget
+  #   container_name: nzbget
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #     - NZBGET_USER=${NZBGET_USER} 
+  #     - NZBGET_PASS=${NZBGET_PASS} 
+  #   volumes:
+  #     - ${VOL_CONFIG}/nzbget/config:/config
+  #     - ${VOL_DOWNLOADS}:/downloads
+  #   ports:
+  #     - ${NZBGET_PORT_6789}:6789
+  #   restart:  ${RESTART_POLICY}
+
+
+volumes:
+  media:
+    driver_opts:
+      type: cifs
+      o: "username=${CIFS_USERNAME},password=${CIFS_PASSWORD},addr=${CIFS_ADDRESS},file_mode=0777,dir_mode=0777,uid=${PUID},gid=${PGID},mfsymlinks,hard,nobrl"
+      device: "//${CIFS_ADDRESS}/media"
+  downloads:
+    driver_opts:
+      type: cifs
+      o: "username=${CIFS_USERNAME},password=${CIFS_PASSWORD},addr=${CIFS_ADDRESS},file_mode=0777,dir_mode=0777,uid=${PUID},gid=${PGID},mfsymlinks,hard,nobrl"
+      device: "//${CIFS_ADDRESS}/downloads"
+
+networks:
+  intranet:
+    external: true
