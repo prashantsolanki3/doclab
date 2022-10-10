@@ -17,3 +17,15 @@
 # Enhancements
 - SSO in Firefly: https://docs.firefly-iii.org/firefly-iii/advanced-installation/authentication/`
 - Organise the services in relavent groups.
+
+
+#### Adding intranet network allows services in various stacks to communicate with each other
+```docker network create -d overlay --attachable intranet```
+#### Deploy a stack
+```docker stack deploy --compose-file <(docker-compose config) <stack>```
+#### Delete Stack
+```docker stack rm <stack>```
+#### service logs
+```docker service logs --follow <stack>_<service>```
+#### Recreate a service
+`docker service update --force <stack>_<service>`

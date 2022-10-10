@@ -1,42 +1,118 @@
-version: "3"
+version: "3.7"
 services:
   mariadb:
-    image: ghcr.io/linuxserver/mariadb
+    image: mariadb
     container_name: mariadb
     environment:
-      - MYSQL_ROOT_PASSWORD=${MARIADB_MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MARIADB_MYSQL_DATABASE}
-      - MYSQL_USER=${MARIADB_MYSQL_USER}
-      - MYSQL_PASSWORD=${MARIADB_MYSQL_PASSWORD}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_MYSQL_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_MYSQL_DATABASE}
+      - MARIADB_USER=${MARIADB_MYSQL_USER}
+      - MARIADB_PASSWORD=${MARIADB_MYSQL_PASSWORD}
     volumes:
-      - ${VOL_CONFIG}/mariadb/config:/config
-      - ${VOL_DATA}/mariadb/databases:/config/databases
+      - ${VOL_GLUSTER_VOLUMES}/mariadb:/var/lib/mysql
     ports:
       - ${MARIADB_PORT_3306}:3306
     restart: ${RESTART_POLICY}
-  redis-master:
-    image: bitnami/redis:latest
+    networks:
+      - db
+  redis:
+    user: "${PUID}:${PGID}"
+    image: redis:latest
     ports:
       - ${REDIS_MASTER_PORT_6379}:6379
     environment:
-      - REDIS_REPLICATION_MODE=master
+      # - REDIS_REPLICATION_MODE=master
       - REDIS_PASSWORD=${REDIS_MASTER_PASSWORD}
     volumes:
-      # - ${VOL_CONFIG}/redis-master/config:/opt/bitnami/redis/mounted-etc
-      - ${VOL_DATA}/redis-master/bitnami:/bitnami
+      - ${VOL_GLUSTER_VOLUMES}/redis/master/redis:/data
+    command: redis-server --save 60 1 --loglevel warning
+    networks:
+      - db
     restart: ${RESTART_POLICY}
   redis-replica:
-    image: bitnami/redis:latest
+    user: "${PUID}:${PGID}"
+    image: redis:latest
     ports:
       - ${REDIS_SLAVE_PORT_6379}:6379
-    depends_on:
-      - redis-master
-    # volumes:
-      # - ${VOL_CONFIG}/redis-replica/config:/opt/bitnami/redis/mounted-etc
+      # depends_on:
+      # - redis
+    volumes:
+      # - ${VOL_GLUSTER_VOLUMES}/redis/slave:/bitnami
+      - ${VOL_GLUSTER_VOLUMES}/redis/slave/redis:/data
     environment:
       - REDIS_REPLICATION_MODE=slave
-      - REDIS_MASTER_HOST=redis-master
-      - REDIS_MASTER_PORT_NUMBER=6379
+      - REDIS_MASTER_HOST=redis
+      - REDIS_MASTER_PORT_NUMBER=${REDIS_MASTER_PORT_6379}
       - REDIS_MASTER_PASSWORD=${REDIS_MASTER_PASSWORD}
       - REDIS_PASSWORD=${REDIS_SLAVE_PASSWORD}
     restart: ${RESTART_POLICY}
+    networks:
+      - db
+    command: redis-server --save 60 1 --loglevel warning --slaveof redis 6379
+  postgres:
+    user: "${PUID}:${PGID}"
+    hostname: ${POSTGRES_MASTER_HOSTNAME}
+    image: crunchydata/crunchy-postgres:centos8-13.6-4.7.5
+    environment:
+      - PGHOST=/tmp
+      - MODE=postgres
+      - MAX_CONNECTIONS=${POSTGRES_MASTER_MAX_CONNECTIONS}
+      - MAX_WAL_SENDERS=${POSTGRES_MASTER_MAX_WAL_SENDERS}
+      - PG_MODE=primary
+      - PG_PRIMARY_USER=${POSTGRES_MASTER_PG_PRIMARY_USER}
+      - PG_PRIMARY_PASSWORD=${POSTGRES_MASTER_PG_PRIMARY_PASSWORD}
+      - PG_DATABASE=${POSTGRES_MASTER_PG_DATABASE}
+      - PG_USER=${POSTGRES_MASTER_PG_USER}
+      - PG_PASSWORD=${POSTGRES_MASTER_PG_PASSWORD}
+      - PG_ROOT_PASSWORD=${POSTGRES_MASTER_PG_ROOT_PASSWORD}
+      - PG_PRIMARY_PORT=${POSTGRES_MASTER_PG_PRIMARY_PORT}
+    volumes:
+      - ${VOL_GLUSTER_VOLUMES}/postgres/master:/pgdata
+    ports:
+      - ${POSTGRES_MASTER_PG_PRIMARY_PORT}:${POSTGRES_MASTER_PG_PRIMARY_PORT}
+    networks:
+      - db
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+  postgres-replica:
+    user: "${PUID}:${PGID}"
+    image: crunchydata/crunchy-postgres:centos8-13.6-4.7.5
+    environment:
+      - PGHOST=/tmp
+      - MODE=postgres
+      - MAX_CONNECTIONS=${POSTGRES_SLAVE_MAX_CONNECTIONS}
+      - MAX_WAL_SENDERS=${POSTGRES_SLAVE_MAX_WAL_SENDERS}
+      - PG_MODE=replica
+      - PG_PRIMARY_HOST=${POSTGRES_MASTER_HOSTNAME}
+      - PG_PRIMARY_PORT=${POSTGRES_MASTER_PG_PRIMARY_PORT}
+      - PG_PRIMARY_USER=${POSTGRES_MASTER_PG_PRIMARY_USER}
+      - PG_PRIMARY_PASSWORD=${POSTGRES_MASTER_PG_PRIMARY_PASSWORD}
+      - PG_DATABASE=${POSTGRES_MASTER_PG_DATABASE}
+      - PG_USER=${POSTGRES_MASTER_PG_USER}
+      - PG_PASSWORD=${POSTGRES_MASTER_PG_PASSWORD}
+      - PG_ROOT_PASSWORD=${POSTGRES_MASTER_PG_ROOT_PASSWORD}
+    volumes:
+      - ${VOL_GLUSTER_VOLUMES}/postgres/slave:/pgdata
+    ports:
+      - ${POSTGRES_SLAVE_PG_PRIMARY_PORT}:5432
+    networks:
+      - db
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+  adminer:
+    image: adminer
+    networks:
+      - intranet
+      - db
+    ports:
+      - 18080:8080
+
+networks:
+  intranet:
+    external: true
+  db:
+    external: true

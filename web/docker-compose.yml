@@ -1,9 +1,8 @@
-version: "3"
+version: "3.7"
 services:
   swag:
     image: ghcr.io/linuxserver/swag
     container_name: swag
-    network_mode: host
     cap_add:
       - NET_ADMIN
     environment:
@@ -18,62 +17,71 @@ services:
       - EXTRA_DOMAINS=${SWAG_EXTRA_DOMAINS}
       - DNSPLUGIN=${SWAG_DNSPLUGIN}
     volumes:
-      - ${VOL_CONFIG}/swag/config:/config
-    # ports:
-    #   - ${SWAG_PORT_443}:443
-    #   - ${SWAG_PORT_80}:80 #optional
+      - ${VOL_CONFIG}/swag:/config
+    ports:
+      - ${SWAG_PORT_443}:443
+      - ${SWAG_PORT_80}:80
     restart: ${RESTART_POLICY}
+    networks:
+      - intranet
     # TODO: Not working correctly with duckdns
-  ddclient:
-    image: ghcr.io/linuxserver/ddclient
-    container_name: ddclient
-    hostname: ddclient
+    # ddclient:
+    #   image: ghcr.io/linuxserver/ddclient
+    #   container_name: ddclient
+    #   hostname: ddclient
+    #   environment:
+    #     - PUID=${PUID}
+    #     - PGID=${PGID}
+    #     - TZ=${TZ}
+    #   volumes:
+    #     - ${VOL_CONFIG}/ddclient:/config
+    #   restart: ${RESTART_POLICY}
+    # TODO: Flame - https://github.com/pawelmalak/flame
+  heimdall:
+    image: ghcr.io/linuxserver/heimdall
+    container_name: heimdall
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${VOL_CONFIG}/ddclient/config:/config
+      - ${VOL_CONFIG}/heimdall:/config
     restart: ${RESTART_POLICY}
-  # heimdall:
-  #   image: ghcr.io/linuxserver/heimdall
-  #   container_name: heimdall
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #   ports:
-  #     - ${HEIMDALL_PORT_80}:80
-  #   volumes:
-  #     - ${VOL_CONFIG}/heimdall/config:/config
-  #   restart: ${RESTART_POLICY}
+    networks:
+      - intranet
   authelia:
-    image: authelia/authelia:4.21.0
+    user: "${PUID}:${PGID}"
+    image: ghcr.io/authelia/authelia:4.34.6
     container_name: authelia
     environment:
       - TZ=${TZ}
     volumes:
-      - ${VOL_CONFIG}/authelia/config:/config
+      - ${VOL_CONFIG}/authelia:/config
     ports:
       - ${AUTHELIA_PORT_9091}:9091
     restart: ${RESTART_POLICY}
-  endlessh:
-    image: lscr.io/linuxserver/endlessh
-    container_name: endlessh
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - MSDELAY=${ESSH_MSDELAY}
-      - MAXLINES=${ESSH_MAXLINES}
-      - MAXCLIENTS=${ESSH_MAXCLIENTS}
-      - LOGFILE=${ESSH_LOGFILE}
-      - BINDFAMILY=${ESSH_BINDFAMILY}
-    volumes:
-      - ${VOL_CONFIG}/endlessh/config:/config
-    ports:
-      - ${ENDLESSH_PORT_2222}:2222
-    restart: ${RESTART_POLICY}
+    networks:
+      - intranet
+      - db
+  # TODO
+  # endlessh:
+  #   image: lscr.io/linuxserver/endlessh
+  #   container_name: endlessh
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #     - MSDELAY=${ESSH_MSDELAY}
+  #     - MAXLINES=${ESSH_MAXLINES}
+  #     - MAXCLIENTS=${ESSH_MAXCLIENTS}
+  #     - LOGFILE=${ESSH_LOGFILE}
+  #     - BINDFAMILY=${ESSH_BINDFAMILY}
+  #   volumes:
+  #     - ${VOL_CONFIG}/endlessh:/config
+  #   ports:
+  #     - ${ENDLESSH_PORT_2222}:2222
+  #   restart: ${RESTART_POLICY}
+  # TODO
   # nextcloud:
   #   image: ghcr.io/linuxserver/nextcloud
   #   container_name: nextcloud
@@ -104,7 +112,14 @@ services:
       - DB_PASSWORD=${LS_DB_PASSWORD}
       - DB_PORT=${LS_DB_PORT}
     volumes:
-      - ${VOL_CONFIG}/librespeed/config:/config
-    ports:
-      - ${LS_PORT_80}:80
+      - ${VOL_CONFIG}/librespeed:/config
     restart: ${RESTART_POLICY}
+    networks:
+      - intranet
+      - db
+
+networks:
+  intranet:
+    external: true
+  db:
+    external: true
