@@ -20,6 +20,12 @@ services:
     ports:
       - ${CODE_SERVER_PORT_8443}:8443
     restart: ${RESTART_POLICY}
+    labels:
+      - swag=enable
+      - swag_address=code-server
+      - swag_port=8443
+      - swag_proto=https
+      - swag_url=code.prashantsolanki.com
   mysql-workbench:
     image: lscr.io/linuxserver/mysql-workbench
     container_name: mysql-workbench
@@ -34,3 +40,9 @@ services:
     cap_add:
       - IPC_LOCK
     restart: ${RESTART_POLICY}
+    labels:
+      - swag=enable
+      - swag_address=mysql-workbench
+      - swag_port=3000
+      - swag_proto=http
+      - swag_url=mysql-workbench.prashantsolanki.com
