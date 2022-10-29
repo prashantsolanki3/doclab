@@ -16,12 +16,32 @@ services:
       - EMAIL=${SWAG_EMAIL}
       - EXTRA_DOMAINS=${SWAG_EXTRA_DOMAINS}
       - DNSPLUGIN=${SWAG_DNSPLUGIN}
+      - DOCKER_HOST=${SWAG_DOCKER_HOST}
+      - CF_ZONE_ID=4fdf442f6e5e3c88d35428ad43d61c98
+      - CF_ACCOUNT_ID=7b1bff94c439c754537935f518c52989
+      - CF_API_TOKEN=AFgtiuQdtIsNjui3Sd5RqPYKpb4lL8exICGgKV0F
+      - CF_TUNNEL_NAME=prashantsolanki.com
+      - CF_TUNNEL_PASSWORD=eyJhIjoiN2IxYmZmOTRjNDM5Yzc1NDUzNzkzNWY1MThjNTI5ODkiLCJ0IjoiNDY4MTIyYjUtNjAxMy00NDQyLTk3NzgtZmFmNGY2YmIzMmU3IiwicyI6Ik5ETmhOakptWVdVdE5UVXdNeTAwTTJSbExUZzNOek10TlRNelkyRmlObVpoTkRsaSJ9
+      - FILE__CF_TUNNEL_CONFIG=/config/tunnelconfig.yml
+    extra_hosts:
+      - prashantsolanki.com:127.0.0.1
     volumes:
       - ${VOL_CONFIG}/swag:/config
     ports:
       - ${SWAG_PORT_443}:443
       - ${SWAG_PORT_80}:80
     restart: ${RESTART_POLICY}
+    networks:
+      - intranet
+  dockerproxy:
+    image: tecnativa/docker-socket-proxy
+    container_name: dockerproxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - CONTAINERS=1
+      - POST=0
+    restart: unless-stopped
     networks:
       - intranet
     # TODO: Not working correctly with duckdns
@@ -49,20 +69,24 @@ services:
     restart: ${RESTART_POLICY}
     networks:
       - intranet
-  authelia:
-    user: "${PUID}:${PGID}"
-    image: ghcr.io/authelia/authelia:4.34.6
-    container_name: authelia
-    environment:
-      - TZ=${TZ}
-    volumes:
-      - ${VOL_CONFIG}/authelia:/config
-    ports:
-      - ${AUTHELIA_PORT_9091}:9091
-    restart: ${RESTART_POLICY}
-    networks:
-      - intranet
-      - db
+    labels:
+      - swag=enable
+  # authelia:
+  #   user: "${PUID}:${PGID}"
+  #   image: ghcr.io/authelia/authelia:4.34.6
+  #   container_name: authelia
+  #   environment:
+  #     - TZ=${TZ}
+  #   volumes:
+  #     - ${VOL_CONFIG}/authelia:/config
+  #   ports:
+  #     - ${AUTHELIA_PORT_9091}:9091
+  #   restart: ${RESTART_POLICY}
+  #   networks:
+  #     - intranet
+  #     - db
+  #   labels:
+  #     - swag=enable
   # TODO
   # endlessh:
   #   image: lscr.io/linuxserver/endlessh
@@ -117,7 +141,11 @@ services:
     networks:
       - intranet
       - db
-
+    labels:
+      - swag=enable
+      - swag_port=80
+      - swag_proto=http
+      - swag_url=speedtest.*
 networks:
   intranet:
     external: true

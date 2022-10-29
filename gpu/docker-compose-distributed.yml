@@ -1,0 +1,125 @@
+version: "3.7"
+services:
+
+  plex:
+    image: ghcr.io/linuxserver/plex
+    container_name: plex
+    # runtime: nvidia
+    environment:
+      - DOCKER_MODS=ghcr.io/pabloromeo/clusterplex_dockermod:latest
+      - ORCHESTRATOR_URL=http://plex-orchestrator:3500
+      - PMS_SERVICE=plex # This service. If you disable Local Relay then you must use PMS_IP instead
+      - PMS_PORT=32400
+      - TRANSCODE_OPERATING_MODE=both #(local|remote|both)
+      - TRANSCODER_VERBOSE=1 # 1=verbose, 0=silent
+      - LOCAL_RELAY_ENABLED=1
+      - LOCAL_RELAY_PORT=32499
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - VERSION=${PLEX_VERSION}
+      - PLEX_CLAIM=${PLEX_CLAIM}
+      - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
+      - NVIDIA_VISIBLE_DEVICES=all
+      - CUDA_DRIVER_CAPABILITIES=compute,video,utility
+    healthcheck:
+      test: curl -fsS http://localhost:32400/identity > /dev/null || exit 1
+      interval: 15s
+      timeout: 15s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - ${VOL_CONFIG}/plex:/config
+      - media:/media
+    ports:
+      - 32499:32499 # LOCAL_RELAY_PORT
+      - 32469:32469
+      - 32400:32400
+      - 32401:32401
+      - 3005:3005
+      - 8324:8324
+      - 1900:1900/udp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+    restart: ${RESTART_POLICY}
+    networks:
+      - intranet
+    labels:
+      - swag=enable
+      - swag_port=32400
+    deploy:
+      placement:
+        constraints: [ node.hostname == docker-manager-1 ]
+        # resources:
+        #   reservations:
+        #     generic_resources:
+        #       - discrete_resource_spec:
+        #           kind: 'NVIDIA-GPU'
+        #           value: 2
+        # devices:
+        #   - driver: nvidia
+        #     device_ids: [ '0' ]
+        #     capabilities: [ gpu ]
+  plex-orchestrator:
+    image: ghcr.io/pabloromeo/clusterplex_orchestrator:latest
+    deploy:
+      mode: replicated
+      replicas: 1
+      update_config:
+        order: start-first
+    healthcheck:
+      test: curl -fsS http://localhost:3500/health > /dev/null || exit 1
+      interval: 15s
+      timeout: 15s
+      retries: 5
+      start_period: 30s
+    environment:
+      TZ: ${TZ}
+      LISTENING_PORT: 3500
+      WORKER_SELECTION_STRATEGY: "LOAD_RANK" # RR | LOAD_CPU | LOAD_TASKS | LOAD_RANK (default)
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 3500:3500
+    networks:
+      - intranet
+  # plex-worker:
+  #   image: ghcr.io/linuxserver/plex:latest
+  #   hostname: "plex-worker-{{.Node.Hostname}}"
+  #   deploy:
+  #     mode: replicated
+  #     replicas: 2
+  #   environment:
+  #     DOCKER_MODS: "ghcr.io/pabloromeo/clusterplex_worker_dockermod:latest"
+  #     VERSION: docker
+  #     PUID: 1000
+  #     PGID: 1000
+  #     TZ: ${TZ}
+  #     LISTENING_PORT: 3501 # used by the healthcheck
+  #     STAT_CPU_INTERVAL: 2000 # interval for reporting worker load metrics
+  #     ORCHESTRATOR_URL: http://plex-orchestrator:3500
+  #     EAE_SUPPORT: "1"
+  #   healthcheck:
+  #     test: curl -fsS http://localhost:3501/health > /dev/null || exit 1
+  #     interval: 15s
+  #     timeout: 15s
+  #     retries: 5
+  #     start_period: 240s
+  #   volumes:
+  #     - ${VOL_CONFIG}/plex/codecs:/codecs
+  #     - media:/media
+  #   networks:
+  #     - intranet
+
+volumes:
+  media:
+    driver_opts:
+      type: cifs
+      o: "username=${CIFS_USERNAME},password=${CIFS_PASSWORD},addr=${CIFS_ADDRESS},file_mode=0777,dir_mode=0777,uid=${PUID},gid=${PGID},mfsymlinks,hard,nobrl"
+      device: "//${CIFS_ADDRESS}/media"
+
+networks:
+  intranet:
+    external: true

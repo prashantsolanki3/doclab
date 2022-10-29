@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   fireflyiii:
-    env_file: firefly.env
+    # env_file: firefly.env
     image: fireflyiii/core:latest
     volumes:
       - ${VOL_CONFIG}/fireflyiii/upload:/var/www/html/storage/upload
@@ -11,15 +11,23 @@ services:
       - db
       - intranet
     restart: ${RESTART_POLICY}
+    labels:
+      - swag=enable
+      - swag_port=8080
+      - swag_url=wallet.*
   fidi:
     image: fireflyiii/data-importer:latest
-    env_file: fidi.env
+    # env_file: fidi.env
     restart: ${RESTART_POLICY}
     ports:
       - ${FIDI_PORT_8080}:8080
     networks:
       - db
       - intranet
+    labels:
+      - swag=enable
+      - swag_port=8080
+      - swag_url=fidi.*
   vaultwarden:
     user: "${PUID}:${PGID}"
     image: vaultwarden/server:latest
@@ -33,6 +41,10 @@ services:
     networks:
       - intranet
       - db
+    labels:
+      - swag=enable
+      - swag_port=80
+      - swag_url=pass.*
   papermerge:
     image: lscr.io/linuxserver/papermerge:latest
     container_name: papermerge
@@ -56,6 +68,10 @@ services:
     networks:
       - db
       - intranet
+    labels:
+      - swag=enable
+      - swag_port=8000
+      - swag_url=docs.*
   hedgedoc:
     image: lscr.io/linuxserver/hedgedoc:latest
     container_name: hedgedoc
@@ -65,21 +81,26 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      - DB_HOST=${HEDGEDOC_DB_HOST}
-      - DB_USER=${HEDGEDOC_DB_USER}
-      - DB_PASS=${HEDGEDOC_DB_PASS}
-      - DB_NAME=${HEDGEDOC_DB_NAME}
-      - DB_PORT=${HEDGEDOC_DB_PORT}
+      # - DB_HOST=${HEDGEDOC_DB_HOST}
+      # - DB_USER=${HEDGEDOC_DB_USER}
+      # - DB_PASS=${HEDGEDOC_DB_PASS}
+      # - DB_NAME=${HEDGEDOC_DB_NAME}
+      # - DB_PORT=${HEDGEDOC_DB_PORT}
       - CMD_DOMAIN=${HEDGEDOC_CMD_DOMAIN}
       - CMD_URL_ADDPORT=${HEDGEDOC_CMD_URL_ADDPORT}
       - CMD_PROTOCOL_USESSL=${HEDGEDOC_CMD_PROTOCOL_USESSL}
       - CMD_PORT=${HEDGEDOC_CMD_PORT}
+      - CMD_DB_URL=${HEDGEDOC_CMD_DB_URL}
     ports:
       - ${HEDGEDOC_CMD_PORT}:${HEDGEDOC_CMD_PORT}
     restart: ${RESTART_POLICY}
     networks:
       - intranet
       - db
+    labels:
+      - swag=enable
+      - swag_port=${HEDGEDOC_CMD_PORT}
+      - swag_url=notes.*
 
 networks:
   db:

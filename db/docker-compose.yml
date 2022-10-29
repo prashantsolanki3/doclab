@@ -15,6 +15,7 @@ services:
     restart: ${RESTART_POLICY}
     networks:
       - db
+
   redis:
     user: "${PUID}:${PGID}"
     image: redis:latest
@@ -110,6 +111,12 @@ services:
       - db
     ports:
       - 18080:8080
+    labels:
+      - swag=enable
+      - swag_address=adminer
+      - swag_port=8080
+      - swag_proto=http
+      - swag_url=sql.prashantsolanki.com
 
 networks:
   intranet:
