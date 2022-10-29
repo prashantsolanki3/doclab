@@ -16,16 +16,17 @@ services:
       # WORKERS: 2
     user: "${PUID}:${PGID}"
     volumes:
-      - ${VOL_CONFIG}/media:/media
-      - ${VOL_CONFIG}/custom-templates:/templates
-      - ${VOL_CONFIG}/geoip:/geoip
-    env_file:
-      - .env
+      - ${VOL_CONFIG}/authentik/media:/media
+      - ${VOL_CONFIG}/authentik/custom-templates:/templates
+      - ${VOL_CONFIG}/authentik/geoip:/geoip
+    # env_file:
+    #   - .env
     ports:
       - "0.0.0.0:${AUTHENTIK_PORT_HTTP:-9000}:9000"
       - "0.0.0.0:${AUTHENTIK_PORT_HTTPS:-9443}:9443"
     networks:
       - intranet
+      - db
   worker:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2022.8.2}
     restart: unless-stopped
@@ -42,27 +43,30 @@ services:
       # - The docker socket can't be accessed anymore
     user: "${PUID}:${PGID}"
     volumes:
-      - ${VOL_CONFIG}/media:/media
-      - ${VOL_CONFIG}/certs:/certs
+      - ${VOL_CONFIG}/authentik/media:/media
+      - ${VOL_CONFIG}/authentik/certs:/certs
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${VOL_CONFIG}/custom-templates:/templates
-      - ${VOL_CONFIG}/geoip:/geoip
-    env_file:
-      - .env
+      - ${VOL_CONFIG}/authentik/custom-templates:/templates
+      - ${VOL_CONFIG}/authentik/geoip:/geoip
+    # env_file:
+    #   - .env
     networks:
       - intranet
+      - db
   geoipupdate:
     image: "maxmindinc/geoipupdate:latest"
     volumes:
-      - ${VOL_CONFIG}/geoip:/usr/share/GeoIP
+      - ${VOL_CONFIG}/authentik/geoip:/usr/share/GeoIP
     environment:
       GEOIPUPDATE_EDITION_IDS: "GeoLite2-City"
       GEOIPUPDATE_FREQUENCY: "8"
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
     networks:
       - intranet
 
 networks:
   intranet:
+    external: true
+  db:
     external: true
