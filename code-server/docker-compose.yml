@@ -15,7 +15,7 @@ services:
       - DOCKER_MODS=${CODE_SERVER_DOCKER_MODS}
     volumes:
       - ${VOL_DOCKER_SOCK}:/var/run/docker.sock
-      - ${VOL_CONFIG}/code-server/config:/config
+      - ${VOL_CONFIG}/code-server:/config
       - ${VOL_PLAYGROUND}:/playground
     ports:
       - ${CODE_SERVER_PORT_8443}:8443
@@ -34,7 +34,7 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${VOL_CONFIG}/mysql-workbench/config:/config
+      - ${VOL_CONFIG}/mysql-workbench:/config
     ports:
       - ${MYSQL_WB_PORT_3000}:3000
     cap_add:
