@@ -25,7 +25,7 @@ services:
       - swag_address=code-server
       - swag_port=8443
       - swag_proto=https
-      - swag_url=code.***REMOVED***
+      - swag_url=${CODE_SERVER_SWAG_URL}
   mysql-workbench:
     image: lscr.io/linuxserver/mysql-workbench
     container_name: mysql-workbench
@@ -45,4 +45,4 @@ services:
       - swag_address=mysql-workbench
       - swag_port=3000
       - swag_proto=http
-      - swag_url=mysql-workbench.***REMOVED***
+      - swag_url=${MYSQL_WB_SWAG_URL}
