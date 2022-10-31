@@ -116,7 +116,7 @@ services:
       - swag_address=adminer
       - swag_port=8080
       - swag_proto=http
-      - swag_url=sql.prashantsolanki.com
+      - swag_url=${ADMINER_SWAG_URL}
 
 networks:
   intranet:
