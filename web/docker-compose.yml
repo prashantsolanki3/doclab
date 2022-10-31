@@ -17,19 +17,19 @@ services:
       - EXTRA_DOMAINS=${SWAG_EXTRA_DOMAINS}
       - DNSPLUGIN=${SWAG_DNSPLUGIN}
       - DOCKER_HOST=${SWAG_DOCKER_HOST}
-      - CF_ZONE_ID=***REMOVED***
-      - CF_ACCOUNT_ID=***REMOVED***
-      - CF_API_TOKEN=AFgtiuQdtIsNjui3Sd5RqPYKpb4lL8exICGgKV0F
-      - CF_TUNNEL_NAME=***REMOVED***
-      - CF_TUNNEL_PASSWORD=eyJhIjoiN2IxYmZmOTRjNDM5Yzc1NDUzNzkzNWY1MThjNTI5ODkiLCJ0IjoiNDY4MTIyYjUtNjAxMy00NDQyLTk3NzgtZmFmNGY2YmIzMmU3IiwicyI6Ik5ETmhOakptWVdVdE5UVXdNeTAwTTJSbExUZzNOek10TlRNelkyRmlObVpoTkRsaSJ9
-      - FILE__CF_TUNNEL_CONFIG=/config/tunnelconfig.yml
+      - CF_ZONE_ID=${SWAG_CF_ZONE_ID}
+      - CF_ACCOUNT_ID=${SWAG_CF_ACCOUNT_ID}
+      - CF_API_TOKEN=${SWAG_CF_API_TOKEN}
+      - CF_TUNNEL_NAME=${SWAG_CF_TUNNEL_NAME}
+      - CF_TUNNEL_PASSWORD=${SWAG_CF_TUNNEL_PASSWORD}
+      - FILE__CF_TUNNEL_CONFIG=${SWAG_FILE__CF_TUNNEL_CONFIG}
     extra_hosts:
-      - ***REMOVED***:127.0.0.1
+      - ${SWAG_URL}:127.0.0.1
     volumes:
       - ${VOL_CONFIG}/swag:/config
-    ports:
-      - ${SWAG_PORT_443}:443
-      - ${SWAG_PORT_80}:80
+    # ports:
+    #   - ${SWAG_PORT_443}:443
+    #   - ${SWAG_PORT_80}:80
     restart: ${RESTART_POLICY}
     networks:
       - intranet
