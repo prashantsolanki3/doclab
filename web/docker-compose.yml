@@ -27,9 +27,9 @@ services:
       - ${SWAG_URL}:127.0.0.1
     volumes:
       - ${VOL_CONFIG}/swag:/config
-    # ports:
-    #   - ${SWAG_PORT_443}:443
-    #   - ${SWAG_PORT_80}:80
+    ports:
+      - ${SWAG_PORT_443}:443
+      - ${SWAG_PORT_80}:80
     restart: ${RESTART_POLICY}
     networks:
       - intranet
