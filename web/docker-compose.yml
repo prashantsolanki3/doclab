@@ -3,7 +3,7 @@ services:
   tunnel:
     container_name: tunnel
     image: cloudflare/cloudflared
-    command: tunnel run
+    command: tunnel run ${TUNNEL_NAME}
     secrets:
       - cf_tunnel_token
     environment:
