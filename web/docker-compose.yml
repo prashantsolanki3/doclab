@@ -4,6 +4,8 @@ services:
     container_name: tunnel
     image: cloudflare/cloudflared
     command: tunnel run
+    secrets:
+      - cf_tunnel_token
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
       - TUNNEL_TOKEN_FILE=/run/secrets/cf_tunnel_token
