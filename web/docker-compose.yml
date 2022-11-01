@@ -6,6 +6,7 @@ services:
     command: tunnel run
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+      - TUNNEL_TOKEN_FILE=/run/secrets/cf_tunnel_token
     restart: ${RESTART_POLICY}
   flame:
     image: pawelmalak/flame
@@ -60,4 +61,6 @@ networks:
       name: intranet
 secrets:
   flame_password:
+    external: true
+  cf_tunnel_token:
     external: true
