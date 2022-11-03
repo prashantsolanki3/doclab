@@ -6,11 +6,12 @@ services:
     command: tunnel run ${TUNNEL_NAME}
     volumes:
       - ${VOL_CONFIG}/cloudflared:/etc/cloudflared/
-    secrets:
-      - cf_tunnel_token
+      # secrets:
+      # - cf_tunnel_token
     environment:
+      - TUNNEL_NAME=${TUNNEL_NAME}
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
-      - TUNNEL_TOKEN_FILE=/run/secrets/cf_tunnel_token
+      # - TUNNEL_TOKEN_FILE=/run/secrets/cf_tunnel_token
     restart: ${RESTART_POLICY}
   flame:
     image: pawelmalak/flame
@@ -18,12 +19,13 @@ services:
     volumes:
       - ${VOL_CONFIG}/flame:/app/data
       - /var/run/docker.sock:/var/run/docker.sock
-    # ports:
-    #   - 5005:5005
-    secrets:
-      - flame_password
-    environment:
-      - PASSWORD_FILE=/run/secrets/flame_password
+      # ports:
+      #   - 5005:5005
+      # secrets:
+      #   - flame_password
+      # environment:
+      #   - PASSWORD=
+      # - PASSWORD_FILE=/run/secrets/flame_password
     restart: ${RESTART_POLICY}
   # heimdall:
   #   image: ghcr.io/linuxserver/heimdall
