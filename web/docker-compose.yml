@@ -46,10 +46,10 @@ services:
     networks:
       - db
     labels:
-      - swag=enable
-      - swag_port=80
-      - swag_proto=http
-      - swag_url=speedtest.*
+      - flame.type=app
+      - flame.name=Speed Test
+      - flame.url=https://speedtest.${DOMAIN}
+      - flame.icon=custom
 networks:
   default:
     external:
