@@ -1,26 +1,26 @@
 version: "3.6"
 services:
   redis-node-0:
-    user: "${PUID}:${PGID}"
+    # user: "${PUID}:${PGID}"
     image: docker.io/bitnami/redis-cluster:6.2
-    volumes:
-      - ${VOL_GLUSTER_VOLUMES}/redis/node-0:/bitnami/redis/data
+    # volumes:
+    #   - ${VOL_GLUSTER_VOLUMES}/redis/node-0:/opt/bitnami/redis/data
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWD}
       - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2
   redis-node-1:
-    user: "${PUID}:${PGID}"
+    # user: "${PUID}:${PGID}"
     image: docker.io/bitnami/redis-cluster:6.2
-    volumes:
-      - ${VOL_GLUSTER_VOLUMES}/redis/node-1:/bitnami/redis/data
+    # volumes:
+    # - ${VOL_GLUSTER_VOLUMES}/redis/node-1:/bitnami/redis/data
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWD}
       - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2
   redis-node-2:
-    user: "${PUID}:${PGID}"
+    # user: "${PUID}:${PGID}"
     image: docker.io/bitnami/redis-cluster:6.2
-    volumes:
-      - ${VOL_GLUSTER_VOLUMES}/redis/node-2:/bitnami/redis/data
+    # volumes:
+    # - ${VOL_GLUSTER_VOLUMES}/redis/node-2:/bitnami/redis/data
     depends_on:
       - redis-node-0
       - redis-node-1
