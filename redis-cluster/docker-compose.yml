@@ -4,7 +4,7 @@ services:
     user: "${PUID}:${PGID}"
     image: docker.io/bitnami/redis-cluster:6.2
     volumes:
-      - ${VOL_GLUSTER_VOLUMES}/redis/node-0:/bitnami/redis/data
+      - ${VOL_GLUSTER_VOLUMES}/redis/node-0:/opt/bitnami/redis
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWD}
       - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2
@@ -12,7 +12,7 @@ services:
     user: "${PUID}:${PGID}"
     image: docker.io/bitnami/redis-cluster:6.2
     volumes:
-      - ${VOL_GLUSTER_VOLUMES}/redis/node-1:/bitnami/redis/data
+      - ${VOL_GLUSTER_VOLUMES}/redis/node-1:/opt/bitnami/redis
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWD}
       - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2
@@ -20,7 +20,7 @@ services:
     user: "${PUID}:${PGID}"
     image: docker.io/bitnami/redis-cluster:6.2
     volumes:
-      - ${VOL_GLUSTER_VOLUMES}/redis/node-2:/bitnami/redis/data
+      - ${VOL_GLUSTER_VOLUMES}/redis/node-2:/opt/bitnami/redis
     depends_on:
       - redis-node-0
       - redis-node-1
