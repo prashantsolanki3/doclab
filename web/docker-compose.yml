@@ -1,92 +1,12 @@
 version: "3.7"
 services:
-  swag:
-    image: ghcr.io/linuxserver/swag
-    container_name: swag
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - URL=${SWAG_URL}
-      - SUBDOMAINS=${SWAG_SUBDOMAINS}
-      - VALIDATION=${SWAG_VALIDATION}
-      - DOCKER_MODS=${SWAG_DOCKER_MODS}
-      - EMAIL=${SWAG_EMAIL}
-      - EXTRA_DOMAINS=${SWAG_EXTRA_DOMAINS}
-      - DNSPLUGIN=${SWAG_DNSPLUGIN}
-      - DOCKER_HOST=${SWAG_DOCKER_HOST}
-      - CF_ZONE_ID=${SWAG_CF_ZONE_ID}
-      - CF_ACCOUNT_ID=${SWAG_CF_ACCOUNT_ID}
-      - CF_API_TOKEN=${SWAG_CF_API_TOKEN}
-      - CF_TUNNEL_NAME=${SWAG_CF_TUNNEL_NAME}
-      - CF_TUNNEL_PASSWORD=${SWAG_CF_TUNNEL_PASSWORD}
-      - FILE__CF_TUNNEL_CONFIG=${SWAG_FILE__CF_TUNNEL_CONFIG}
-    extra_hosts:
-      - ${SWAG_URL}:127.0.0.1
+  flame:
+    image: pawelmalak/flame
+    container_name: flame
     volumes:
-      - ${VOL_CONFIG}/swag:/config
-    ports:
-      - ${SWAG_PORT_443}:443
-      - ${SWAG_PORT_80}:80
+      - ${VOL_CONFIG}/flame:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
     restart: ${RESTART_POLICY}
-    networks:
-      - intranet
-  dockerproxy:
-    image: tecnativa/docker-socket-proxy
-    container_name: dockerproxy
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      - CONTAINERS=1
-      - POST=0
-    restart: unless-stopped
-    networks:
-      - intranet
-    # TODO: Not working correctly with duckdns
-    # ddclient:
-    #   image: ghcr.io/linuxserver/ddclient
-    #   container_name: ddclient
-    #   hostname: ddclient
-    #   environment:
-    #     - PUID=${PUID}
-    #     - PGID=${PGID}
-    #     - TZ=${TZ}
-    #   volumes:
-    #     - ${VOL_CONFIG}/ddclient:/config
-    #   restart: ${RESTART_POLICY}
-    # TODO: Flame - https://github.com/pawelmalak/flame
-  heimdall:
-    image: ghcr.io/linuxserver/heimdall
-    container_name: heimdall
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    volumes:
-      - ${VOL_CONFIG}/heimdall:/config
-    restart: ${RESTART_POLICY}
-    networks:
-      - intranet
-    labels:
-      - swag=enable
-  # authelia:
-  #   user: "${PUID}:${PGID}"
-  #   image: ghcr.io/authelia/authelia:4.34.6
-  #   container_name: authelia
-  #   environment:
-  #     - TZ=${TZ}
-  #   volumes:
-  #     - ${VOL_CONFIG}/authelia:/config
-  #   ports:
-  #     - ${AUTHELIA_PORT_9091}:9091
-  #   restart: ${RESTART_POLICY}
-  #   networks:
-  #     - intranet
-  #     - db
-  #   labels:
-  #     - swag=enable
   # TODO
   # endlessh:
   #   image: lscr.io/linuxserver/endlessh
@@ -104,21 +24,6 @@ services:
   #     - ${VOL_CONFIG}/endlessh:/config
   #   ports:
   #     - ${ENDLESSH_PORT_2222}:2222
-  #   restart: ${RESTART_POLICY}
-  # TODO
-  # nextcloud:
-  #   image: ghcr.io/linuxserver/nextcloud
-  #   container_name: nextcloud
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #   volumes:
-  #     - ${VOL_CONFIG}/nextcloud/config:/config
-  #     - ${VOL_DOCUMENTS}/nextcloud:/data
-  #     - ${NEXTCLOUD_EXTERNAL_MOUNT}:/mnt
-  #   ports:
-  #     - ${NEXTCLOUD_PORT_443}:443
   #   restart: ${RESTART_POLICY}
   librespeed:
     image: lscr.io/linuxserver/librespeed
