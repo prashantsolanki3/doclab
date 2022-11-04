@@ -44,7 +44,6 @@ services:
       - ${VOL_CONFIG}/librespeed:/config
     restart: ${RESTART_POLICY}
     networks:
-      - intranet
       - db
     labels:
       - swag=enable
@@ -52,7 +51,8 @@ services:
       - swag_proto=http
       - swag_url=speedtest.*
 networks:
-  intranet:
-    external: true
+  default:
+    external:
+      name: intranet
   db:
     external: true
