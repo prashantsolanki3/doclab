@@ -132,8 +132,8 @@ services:
       - TZ=${TZ}
     volumes:
       - ${VOL_CONFIG}/nextcloud:/config
-      - ${VOL_DOCUMENTS}/nextcloud:/data
-      - ${NEXTCLOUD_EXTERNAL_MOUNT}:/mnt
+      - ${VOL_DRIVE}:/data
+      # - ${NEXTCLOUD_EXTERNAL_MOUNT}:/mnt
     restart: ${RESTART_POLICY}
     labels:
       - flame.type=app
