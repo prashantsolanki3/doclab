@@ -76,7 +76,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.role == worker
+          - node.role == manager
   postgres-replica:
     user: "${PUID}:${PGID}"
     image: crunchydata/crunchy-postgres:centos8-13.6-4.7.5
@@ -103,20 +103,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.role == worker
-  adminer:
-    image: adminer
-    networks:
-      - intranet
-      - db
-    ports:
-      - 18080:8080
-    labels:
-      - swag=enable
-      - swag_address=adminer
-      - swag_port=8080
-      - swag_proto=http
-      - swag_url=${ADMINER_SWAG_URL}
+          - node.role == manager
 
 networks:
   intranet:
