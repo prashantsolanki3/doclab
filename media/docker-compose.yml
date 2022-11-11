@@ -165,8 +165,7 @@ services:
       - 6881:6881
       - 6881:6881/udp
     restart: ${RESTART_POLICY}
-    networks:
-      - intranet
+
     labels:
       - swag=enable
       - swag_port=8112
@@ -202,8 +201,7 @@ services:
       - media:/media
       - downloads:/downloads
     restart: ${RESTART_POLICY}
-    networks:
-      - intranet
+
     labels:
       - swag=enable
       - swag_port=7878
@@ -220,8 +218,7 @@ services:
       - media:/media
       - downloads:/downloads
     restart: ${RESTART_POLICY}
-    networks:
-      - intranet
+
     labels:
       - swag=enable
       - swag_port=8989
@@ -257,8 +254,7 @@ services:
     # ports:
     #   - ${LIDARR_PORT_8686}:8686
     restart: ${RESTART_POLICY}
-    networks:
-      - intranet
+
     labels:
       - swag=enable
       - swag_port=8686
@@ -277,8 +273,7 @@ services:
     restart: ${RESTART_POLICY}
     # ports:
     #   - 8787:8787
-    networks:
-      - intranet
+
     labels:
       - swag=enable
       - swag_address=readarr-ebooks
@@ -297,8 +292,7 @@ services:
       - downloads:/downloads
       - media:/media
     restart: ${RESTART_POLICY}
-    networks:
-      - intranet
+
     # ports:
     #   - 8788:8787
     labels:
@@ -319,8 +313,7 @@ services:
       - media:/media
       - downloads:/downloads
     restart: ${RESTART_POLICY}
-    networks:
-      - intranet
+
     labels:
       - swag=enable
       - swag_port=5055
@@ -334,8 +327,7 @@ services:
     volumes:
       - ${VOL_CONFIG}/prowlarr:/config
     restart: ${RESTART_POLICY}
-    networks:
-      - intranet
+
     labels:
       - swag=enable
       - swag_port=9696
@@ -364,8 +356,7 @@ services:
     volumes:
       - ${VOL_CONFIG}/tautulli:/config
     restart: ${RESTART_POLICY}
-    networks:
-      - intranet
+
     ports:
       - 8181:8181
     labels:
@@ -387,5 +378,6 @@ volumes:
       device: "//${CIFS_ADDRESS}/downloads"
 
 networks:
-  intranet:
-    external: true
+  default:
+    external:
+      name: intranet
