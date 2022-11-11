@@ -131,6 +131,8 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+    networks:
+      - intranet
     volumes:
       - ${VOL_CONFIG}/nextcloud:/config
       - ${VOL_DRIVE}:/data
@@ -143,8 +145,7 @@ services:
       - flame.icon=custom
 
 networks:
-  default:
+  intranet:
     external: true
-    name: intranet
   db:
     external: true

@@ -28,8 +28,7 @@ services:
       - flame.icon=custom
 
 networks:
-  default:
+  intranet:
     external: true
-    name: intranet
   db:
     external: true
