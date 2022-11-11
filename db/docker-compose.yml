@@ -96,8 +96,8 @@ services:
       - PG_ROOT_PASSWORD=${POSTGRES_MASTER_PG_ROOT_PASSWORD}
     volumes:
       - ${VOL_GLUSTER_VOLUMES}/postgres/slave:/pgdata
-    ports:
-      - ${POSTGRES_SLAVE_PG_PRIMARY_PORT}:5432
+    # ports:
+    #   - ${POSTGRES_SLAVE_PG_PRIMARY_PORT}:5432
     networks:
       - db
     # deploy:
