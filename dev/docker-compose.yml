@@ -58,7 +58,7 @@ services:
       - 18080:8080
 networks:
   default:
-    external:
-      name: intranet
+    external: true
+    name: intranet
   db:
     external: true

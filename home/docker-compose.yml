@@ -11,8 +11,6 @@ services:
     volumes:
       - ${VOL_CONFIG}/homeassistant:/config
     restart: ${RESTART_POLICY}
-    networks:
-      - intranet
     labels:
       - swag=enable
       - swag_port=8123
@@ -31,8 +29,6 @@ services:
     restart: ${RESTART_POLICY}
     ports:
       - ${GROCY_PORT_80}:80
-    networks:
-      - intranet
     labels:
       - swag=enable
 
@@ -42,12 +38,11 @@ services:
     restart: ${RESTART_POLICY}
     volumes:
       - ${VOL_CONFIG}/mqtt:/mosquitto
-    networks:
-      - intranet
     # ports:
     #   - 1883:1883
     #   - 9001:9001
 
 networks:
-  intranet:
+  default:
     external: true
+    name: intranet

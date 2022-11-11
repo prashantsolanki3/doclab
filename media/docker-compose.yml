@@ -379,5 +379,5 @@ volumes:
 
 networks:
   default:
-    external:
-      name: intranet
+    external: true
+    name: intranet

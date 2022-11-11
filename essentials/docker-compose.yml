@@ -52,8 +52,8 @@ services:
       - POST=0
 networks:
   default:
-    external:
-      name: intranet
+    external: true
+    name: intranet
   agent_network:
     driver: overlay
     attachable: true
