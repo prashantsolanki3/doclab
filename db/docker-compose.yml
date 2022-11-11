@@ -25,7 +25,7 @@ services:
       - REDIS_REPLICATION_MODE=master
       - REDIS_PASSWORD=${REDIS_MASTER_PASSWORD}
     volumes:
-      - ${VOL_GLUSTER_VOLUMES}/redis/master:/data
+      - ${VOL_GLUSTER_VOLUMES}/redis:/data
     command: redis-server --save 60 1 --loglevel warning
     networks:
       - db
@@ -39,7 +39,7 @@ services:
     # - redis
     volumes:
       # - ${VOL_GLUSTER_VOLUMES}/redis/slave:/bitnami
-      - ${VOL_GLUSTER_VOLUMES}/redis/slave:/data
+      - ${VOL_GLUSTER_VOLUMES}/redis:/data
     environment:
       - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis
