@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
 services:
   code-server:
     image: ghcr.io/linuxserver/code-server

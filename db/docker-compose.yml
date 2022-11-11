@@ -10,8 +10,8 @@ services:
       - MARIADB_PASSWORD=${MARIADB_MYSQL_PASSWORD}
     volumes:
       - ${VOL_GLUSTER_VOLUMES}/mariadb:/var/lib/mysql
-    ports:
-      - ${MARIADB_PORT_3306}:3306
+    # ports:
+    #   - ${MARIADB_PORT_3306}:3306
     restart: ${RESTART_POLICY}
     networks:
       - db
@@ -19,13 +19,13 @@ services:
   redis:
     user: "${PUID}:${PGID}"
     image: redis:latest
-    ports:
-      - ${REDIS_MASTER_PORT_6379}:6379
+    # ports:
+    #   - ${REDIS_MASTER_PORT_6379}:6379
     environment:
-      # - REDIS_REPLICATION_MODE=master
+      - REDIS_REPLICATION_MODE=master
       - REDIS_PASSWORD=${REDIS_MASTER_PASSWORD}
     volumes:
-      - ${VOL_GLUSTER_VOLUMES}/redis/master/redis:/data
+      - ${VOL_GLUSTER_VOLUMES}/redis/master:/data
     command: redis-server --save 60 1 --loglevel warning
     networks:
       - db
@@ -33,17 +33,17 @@ services:
   redis-replica:
     user: "${PUID}:${PGID}"
     image: redis:latest
-    ports:
-      - ${REDIS_SLAVE_PORT_6379}:6379
-      # depends_on:
-      # - redis
+    # ports:
+    #   - ${REDIS_SLAVE_PORT_6379}:6379
+    # depends_on:
+    # - redis
     volumes:
       # - ${VOL_GLUSTER_VOLUMES}/redis/slave:/bitnami
-      - ${VOL_GLUSTER_VOLUMES}/redis/slave/redis:/data
+      - ${VOL_GLUSTER_VOLUMES}/redis/slave:/data
     environment:
       - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis
-      - REDIS_MASTER_PORT_NUMBER=${REDIS_MASTER_PORT_6379}
+      - REDIS_MASTER_PORT_NUMBER=6379
       - REDIS_MASTER_PASSWORD=${REDIS_MASTER_PASSWORD}
       - REDIS_PASSWORD=${REDIS_SLAVE_PASSWORD}
     restart: ${RESTART_POLICY}
@@ -69,14 +69,14 @@ services:
       - PG_PRIMARY_PORT=${POSTGRES_MASTER_PG_PRIMARY_PORT}
     volumes:
       - ${VOL_GLUSTER_VOLUMES}/postgres/master:/pgdata
-    ports:
-      - ${POSTGRES_MASTER_PG_PRIMARY_PORT}:${POSTGRES_MASTER_PG_PRIMARY_PORT}
+    # ports:
+    #   - ${POSTGRES_MASTER_PG_PRIMARY_PORT}:${POSTGRES_MASTER_PG_PRIMARY_PORT}
     networks:
       - db
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
+    # deploy:
+    #   placement:
+    #     constraints:
+    #       - node.role == manager
   postgres-replica:
     user: "${PUID}:${PGID}"
     image: crunchydata/crunchy-postgres:centos8-13.6-4.7.5
@@ -100,10 +100,10 @@ services:
       - ${POSTGRES_SLAVE_PG_PRIMARY_PORT}:5432
     networks:
       - db
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
+    # deploy:
+    #   placement:
+    #     constraints:
+    #       - node.role == manager
 
 networks:
   intranet:
