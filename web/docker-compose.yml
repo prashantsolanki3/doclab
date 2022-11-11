@@ -25,31 +25,7 @@ services:
   #   ports:
   #     - ${ENDLESSH_PORT_2222}:2222
   #   restart: ${RESTART_POLICY}
-  librespeed:
-    image: lscr.io/linuxserver/librespeed
-    container_name: librespeed
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - PASSWORD=PASSWORD
-      - CUSTOM_RESULTS=false
-      - DB_TYPE=${LS_DB_TYPE}
-      - DB_NAME=${LS_DB_NAME}
-      - DB_HOSTNAME=${LS_DB_HOSTNAME}
-      - DB_USERNAME=${LS_DB_USERNAME}
-      - DB_PASSWORD=${LS_DB_PASSWORD}
-      - DB_PORT=${LS_DB_PORT}
-    volumes:
-      - ${VOL_CONFIG}/librespeed:/config
-    restart: ${RESTART_POLICY}
-    networks:
-      - db
-    labels:
-      - flame.type=app
-      - flame.name=Speed Test
-      - flame.url=https://speedtest.${DOMAIN}
-      - flame.icon=custom
+
 networks:
   default:
     external:
