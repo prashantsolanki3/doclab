@@ -60,8 +60,7 @@ services:
     ports:
       - 18080:8080
 networks:
-  default:
+  intranet:
     external: true
-    name: intranet
   db:
     external: true
