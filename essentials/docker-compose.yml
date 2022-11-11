@@ -57,5 +57,3 @@ networks:
   agent_network:
     driver: overlay
     attachable: true
-  db:
-    external: true

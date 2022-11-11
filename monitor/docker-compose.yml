@@ -19,6 +19,7 @@ services:
       - ${VOL_CONFIG}/librespeed:/config
     restart: ${RESTART_POLICY}
     networks:
+      - intranet
       - db
     labels:
       - flame.type=app
