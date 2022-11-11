@@ -72,35 +72,35 @@ services:
       - swag=enable
       - swag_port=8000
       - swag_url=docs.*
-  hedgedoc:
-    image: lscr.io/linuxserver/hedgedoc:latest
-    container_name: hedgedoc
-    volumes:
-      - ${VOL_CONFIG}/hedgedoc:/config
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      # - DB_HOST=${HEDGEDOC_DB_HOST}
-      # - DB_USER=${HEDGEDOC_DB_USER}
-      # - DB_PASS=${HEDGEDOC_DB_PASS}
-      # - DB_NAME=${HEDGEDOC_DB_NAME}
-      # - DB_PORT=${HEDGEDOC_DB_PORT}
-      - CMD_DOMAIN=${HEDGEDOC_CMD_DOMAIN}
-      - CMD_URL_ADDPORT=${HEDGEDOC_CMD_URL_ADDPORT}
-      - CMD_PROTOCOL_USESSL=${HEDGEDOC_CMD_PROTOCOL_USESSL}
-      - CMD_PORT=${HEDGEDOC_CMD_PORT}
-      - CMD_DB_URL=${HEDGEDOC_CMD_DB_URL}
-    ports:
-      - ${HEDGEDOC_CMD_PORT}:${HEDGEDOC_CMD_PORT}
-    restart: ${RESTART_POLICY}
-    networks:
-      - intranet
-      - db
-    labels:
-      - swag=enable
-      - swag_port=${HEDGEDOC_CMD_PORT}
-      - swag_url=notes.*
+  # hedgedoc:
+  #   image: lscr.io/linuxserver/hedgedoc:latest
+  #   container_name: hedgedoc
+  #   volumes:
+  #     - ${VOL_CONFIG}/hedgedoc:/config
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #     # - DB_HOST=${HEDGEDOC_DB_HOST}
+  #     # - DB_USER=${HEDGEDOC_DB_USER}
+  #     # - DB_PASS=${HEDGEDOC_DB_PASS}
+  #     # - DB_NAME=${HEDGEDOC_DB_NAME}
+  #     # - DB_PORT=${HEDGEDOC_DB_PORT}
+  #     - CMD_DOMAIN=${HEDGEDOC_CMD_DOMAIN}
+  #     - CMD_URL_ADDPORT=${HEDGEDOC_CMD_URL_ADDPORT}
+  #     - CMD_PROTOCOL_USESSL=${HEDGEDOC_CMD_PROTOCOL_USESSL}
+  #     - CMD_PORT=${HEDGEDOC_CMD_PORT}
+  #     - CMD_DB_URL=${HEDGEDOC_CMD_DB_URL}
+  #   ports:
+  #     - ${HEDGEDOC_CMD_PORT}:${HEDGEDOC_CMD_PORT}
+  #   restart: ${RESTART_POLICY}
+  #   networks:
+  #     - intranet
+  #     - db
+  #   labels:
+  #     - swag=enable
+  #     - swag_port=${HEDGEDOC_CMD_PORT}
+  #     - swag_url=notes.*
   bookstack:
     image: lscr.io/linuxserver/bookstack
     container_name: bookstack
