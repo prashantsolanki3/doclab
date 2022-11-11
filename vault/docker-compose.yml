@@ -9,7 +9,6 @@ services:
       - ${FIREFLY_III_PORT_8080}:8080
     networks:
       - db
-      - intranet
     restart: ${RESTART_POLICY}
     labels:
       - swag=enable
@@ -23,7 +22,6 @@ services:
       - ${FIDI_PORT_8080}:8080
     networks:
       - db
-      - intranet
     labels:
       - swag=enable
       - swag_port=8080
@@ -39,7 +37,6 @@ services:
     #   - ${VAULTWARDEN_PORT_8080}:80
     restart: ${RESTART_POLICY}
     networks:
-      - intranet
       - db
     labels:
       - swag=enable
@@ -67,7 +64,6 @@ services:
     restart: ${RESTART_POLICY}
     networks:
       - db
-      - intranet
     labels:
       - swag=enable
       - swag_port=8000
@@ -117,7 +113,7 @@ services:
       - ${VOL_CONFIG}/bookstack:/config
     restart: unless-stopped
     networks:
-      - intranet
+      - db
     labels:
       - flame.type=app
       - flame.name=bookstack
@@ -142,7 +138,8 @@ services:
       - flame.icon=custom
 
 networks:
+  default:
+    external:
+      name: intranet
   db:
-    external: true
-  intranet:
     external: true
