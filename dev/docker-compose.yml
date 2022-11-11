@@ -7,18 +7,20 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      - PASSWORD=${CODE_SERVER_PASSWORD} #optional
+      - PASSWORD=${CODE_SERVER_PASSWORD}
       - HASHED_PASSWORD=${CODE_SERVER_HASHED_PASSWORD}
       - SUDO_PASSWORD=${CODE_SERVER_SUDO_PASSWORD}
       - SUDO_PASSWORD_HASH=${CODE_SERVER_SUDO_PASSWORD_HASH}
       - PROXY_DOMAIN=${CODE_SERVER_PROXY_DOMAIN}
       - DOCKER_MODS=${CODE_SERVER_DOCKER_MODS}
     volumes:
-      - ${VOL_DOCKER_SOCK}:/var/run/docker.sock
+      - DOCKER_HOST=dockerproxy
       - ${VOL_CONFIG}/code-server:/config
       - ${VOL_PLAYGROUND}:/playground
     ports:
       - ${CODE_SERVER_PORT_8443}:8443
+    networks:
+      - db
     restart: ${RESTART_POLICY}
     labels:
       - swag=enable
@@ -37,6 +39,8 @@ services:
       - ${VOL_CONFIG}/mysql-workbench:/config
     ports:
       - ${MYSQL_WB_PORT_3000}:3000
+    networks:
+      - db
     cap_add:
       - IPC_LOCK
     restart: ${RESTART_POLICY}
@@ -46,3 +50,15 @@ services:
       - swag_port=3000
       - swag_proto=http
       - swag_url=${MYSQL_WB_SWAG_URL}
+  adminer:
+    image: adminer
+    networks:
+      - db
+    ports:
+      - 18080:8080
+networks:
+  default:
+    external:
+      name: intranet
+  db:
+    external: true
