@@ -1,148 +1,116 @@
+x-networks:
+  &networks
+  networks:
+    - db
+    - intranet
+
+x-flame-labels:
+  &flame_labels
+  flame.type: app
+  flame.icon: custom
+
+x-environment:
+  &environment
+  PUID: $PUID
+  PGID: $PGID
+  TZ: $TZ
+
 version: "3.7"
 services:
   fireflyiii:
-    # env_file: firefly.env
     image: fireflyiii/core:latest
     volumes:
-      - ${VOL_CONFIG}/fireflyiii/upload:/var/www/html/storage/upload
+      - $VOL_CONFIG/fireflyiii/upload:/var/www/html/storage/upload
     ports:
-      - ${FIREFLY_III_PORT_8080}:8080
-    networks:
-      - db
-      - intranet
-    restart: ${RESTART_POLICY}
+      - $FIREFLY_III_PORT_8080:8080
+    <<: *networks
+    restart: $RESTART_POLICY
     labels:
-      - swag=enable
-      - swag_port=8080
-      - swag_url=wallet.*
+      <<: *flame_labels
+      flame.name: Wallet
+      flame.url: https://wallet.$DOMAIN
+
   fidi:
     image: fireflyiii/data-importer:latest
     # env_file: fidi.env
-    restart: ${RESTART_POLICY}
+    restart: $RESTART_POLICY
     ports:
-      - ${FIDI_PORT_8080}:8080
-    networks:
-      - db
-      - intranet
+      - $FIDI_PORT_8080:8080
+    <<: *networks
+
     labels:
-      - swag=enable
-      - swag_port=8080
-      - swag_url=fidi.*
+      <<: *flame_labels
+      flame.name: Sync Wallet
+      flame.url: https://fidi.$DOMAIN
+
   vaultwarden:
-    user: "${PUID}:${PGID}"
+    user: "$PUID:$PGID"
     image: vaultwarden/server:latest
     environment:
-      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_URL=$DATABASE_URL
     volumes:
-      - ${VOL_CONFIG}/vaultwarden:/data
-    # ports:
-    #   - ${VAULTWARDEN_PORT_8080}:80
-    restart: ${RESTART_POLICY}
-    networks:
-      - db
-      - intranet
+      - $VOL_CONFIG/vaultwarden:/data
+    restart: $RESTART_POLICY
+    <<: *networks
     labels:
-      - swag=enable
-      - swag_port=80
-      - swag_url=pass.*
+      <<: *flame_labels
+      flame.name: Vault Warden
+      flame.url: https://pass.$DOMAIN
   papermerge:
     image: lscr.io/linuxserver/papermerge:latest
     container_name: papermerge
-    # user: "1000:1000"
     environment:
-      # - PUID=1000
-      # - PGID=${PGID}
-      - TZ=${TZ}
-      - REDIS_URL=${PAPERMERGE_REDIS_URL}
-      - DB_USER=${PAPERMERGE_DB_USER}
-      - DB_NAME=${PAPERMERGE_DB_NAME}
-      - DB_PASSWORD=${PAPERMERGE_DB_PASSWORD}
-      - DB_HOST=${PAPERMERGE_DB_HOST}
-      - DB_PORT=${PAPERMERGE_DB_PORT}
+      TZ: $TZ
+      REDIS_URL: $PAPERMERGE_REDIS_URL
+      DB_USER: $PAPERMERGE_DB_USER
+      DB_NAME: $PAPERMERGE_DB_NAME
+      DB_PASSWORD: $PAPERMERGE_DB_PASSWORD
+      DB_HOST: $PAPERMERGE_DB_HOST
+      DB_PORT: $PAPERMERGE_DB_PORT
     volumes:
-      - ${VOL_CONFIG}/papermerge/config:/config
-      - ${VOL_CONFIG}/papermerge/data:/data
-    ports:
-      - ${PAPERMERGE_PORT_8000}:8000
-    restart: ${RESTART_POLICY}
-    networks:
-      - db
-      - intranet
+      - $VOL_CONFIG/papermerge/config:/config
+      - $VOL_CONFIG/papermerge/data:/data
+    restart: $RESTART_POLICY
+    <<: *networks
     labels:
-      - swag=enable
-      - swag_port=8000
-      - swag_url=docs.*
-  # hedgedoc:
-  #   image: lscr.io/linuxserver/hedgedoc:latest
-  #   container_name: hedgedoc
-  #   volumes:
-  #     - ${VOL_CONFIG}/hedgedoc:/config
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #     # - DB_HOST=${HEDGEDOC_DB_HOST}
-  #     # - DB_USER=${HEDGEDOC_DB_USER}
-  #     # - DB_PASS=${HEDGEDOC_DB_PASS}
-  #     # - DB_NAME=${HEDGEDOC_DB_NAME}
-  #     # - DB_PORT=${HEDGEDOC_DB_PORT}
-  #     - CMD_DOMAIN=${HEDGEDOC_CMD_DOMAIN}
-  #     - CMD_URL_ADDPORT=${HEDGEDOC_CMD_URL_ADDPORT}
-  #     - CMD_PROTOCOL_USESSL=${HEDGEDOC_CMD_PROTOCOL_USESSL}
-  #     - CMD_PORT=${HEDGEDOC_CMD_PORT}
-  #     - CMD_DB_URL=${HEDGEDOC_CMD_DB_URL}
-  #   ports:
-  #     - ${HEDGEDOC_CMD_PORT}:${HEDGEDOC_CMD_PORT}
-  #   restart: ${RESTART_POLICY}
-  #   networks:
-  #     - intranet
-  #     - db
-  #   labels:
-  #     - swag=enable
-  #     - swag_port=${HEDGEDOC_CMD_PORT}
-  #     - swag_url=notes.*
+      <<: *flame_labels
+      flame.name: Papermerge
+      flame.url: https://docs.$DOMAIN
+
   bookstack:
     image: lscr.io/linuxserver/bookstack
     container_name: bookstack
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - APP_URL=${BOOKSTACK_APP_URL}
-      - DB_HOST=${BOOKSTACK_DB_HOST}
-      - DB_USER=${BOOKSTACK_DB_USER}
-      - DB_PASS=${BOOKSTACK_DB_PASS}
-      - DB_DATABASE=${BOOKSTACK_DB_DATABASE}
+      <<: *environment
+      APP_URL: $BOOKSTACK_APP_URL
+      DB_HOST: $BOOKSTACK_DB_HOST
+      DB_USER: $BOOKSTACK_DB_USER
+      DB_PASS: $BOOKSTACK_DB_PASS
+      DB_DATABASE: $BOOKSTACK_DB_DATABASE
     volumes:
-      - ${VOL_CONFIG}/bookstack:/config
+      - $VOL_CONFIG/bookstack:/config
     restart: unless-stopped
-    networks:
-      - db
-      - intranet
+    <<: *networks
     labels:
-      - flame.type=app
-      - flame.name=bookstack
-      - flame.url=https://wiki.prashantsolanki.com
-      - flame.icon=custom
+      <<: *flame_labels
+      flame.name: Wiki
+      flame.url: https://wiki.$DOMAIN
+
   nextcloud:
     image: ghcr.io/linuxserver/nextcloud
     container_name: nextcloud
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      <<: *environment
     networks:
       - intranet
     volumes:
-      - ${VOL_CONFIG}/nextcloud:/config
-      - ${VOL_DRIVE}:/data
-      # - ${NEXTCLOUD_EXTERNAL_MOUNT}:/mnt
-    restart: ${RESTART_POLICY}
+      - $VOL_CONFIG/nextcloud:/config
+      - $VOL_DRIVE:/data
+    restart: $RESTART_POLICY
     labels:
-      - flame.type=app
-      - flame.name=Drive
-      - flame.url=https://drive.prashantsolanki.com
-      - flame.icon=custom
+      <<: *flame_labels
+      flame.name: Nextcloud Drive
+      flame.url: https://drive.$DOMAIN
 
 networks:
   intranet:
