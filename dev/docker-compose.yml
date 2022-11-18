@@ -35,6 +35,8 @@ services:
     restart: $RESTART_POLICY
     labels:
       <<: *flame_labels
+      flame.name: Code
+      flame.url: https://code.$DOMAIN
 
   mysql-workbench:
     image: lscr.io/linuxserver/mysql-workbench
@@ -49,11 +51,15 @@ services:
     restart: $RESTART_POLICY
     labels:
       <<: *flame_labels
+      flame.name: Workbench
+      flame.url: https://workbench.$DOMAIN
   adminer:
     image: adminer
     <<: *networks
     labels:
       <<: *flame_labels
+      flame.name: Sql
+      flame.url: https://sql.$DOMAIN
 networks:
   intranet:
     external: true
