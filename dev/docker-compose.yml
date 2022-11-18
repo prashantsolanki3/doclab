@@ -1,64 +1,59 @@
+x-environment:
+  &environment
+  PUID: $PUID
+  PGID: $PGID
+  TZ: $TZ
+x-networks:
+  &networks
+  networks:
+    - db
+    - intranet
+
+x-flame-labels:
+  &flame_labels
+  flame.type: app
+  flame.icon: custom
+
 version: "3.7"
 services:
   code-server:
     image: ghcr.io/linuxserver/code-server
     container_name: code-server
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - PASSWORD=${CODE_SERVER_PASSWORD}
-      - HASHED_PASSWORD=${CODE_SERVER_HASHED_PASSWORD}
-      - SUDO_PASSWORD=${CODE_SERVER_SUDO_PASSWORD}
-      - SUDO_PASSWORD_HASH=${CODE_SERVER_SUDO_PASSWORD_HASH}
-      - PROXY_DOMAIN=${CODE_SERVER_PROXY_DOMAIN}
-      - DOCKER_MODS=${CODE_SERVER_DOCKER_MODS}
-      - DOCKER_HOST=dockerproxy
+      <<: *environment
+      PASSWORD: $CODE_SERVER_PASSWORD
+      HASHED_PASSWORD: $CODE_SERVER_HASHED_PASSWORD
+      SUDO_PASSWORD: $CODE_SERVER_SUDO_PASSWORD
+      SUDO_PASSWORD_HASH: $CODE_SERVER_SUDO_PASSWORD_HASH
+      PROXY_DOMAIN: $CODE_SERVER_PROXY_DOMAIN
+      DOCKER_MODS: $CODE_SERVER_DOCKER_MODS
+      DOCKER_HOST: dockerproxy
     volumes:
-      - ${VOL_CONFIG}/code-server:/config
-      - ${VOL_PLAYGROUND}:/playground
-    ports:
-      - ${CODE_SERVER_PORT_8443}:8443
-    networks:
-      - intranet
-      - db
-    restart: ${RESTART_POLICY}
+      - $VOL_CONFIG/code-server:/config
+      - $VOL_PLAYGROUND:/playground
+    <<: *networks
+    restart: $RESTART_POLICY
     labels:
-      - swag=enable
-      - swag_address=code-server
-      - swag_port=8443
-      - swag_proto=https
-      - swag_url=${CODE_SERVER_SWAG_URL}
+      <<: *flame_labels
+
   mysql-workbench:
     image: lscr.io/linuxserver/mysql-workbench
     container_name: mysql-workbench
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      <<: *environment
     volumes:
-      - ${VOL_CONFIG}/mysql-workbench:/config
-    ports:
-      - ${MYSQL_WB_PORT_3000}:3000
-    networks:
-      - db
-      - intranet
+      - $VOL_CONFIG/mysql-workbench:/config
+    <<: *networks
     cap_add:
       - IPC_LOCK
-    restart: ${RESTART_POLICY}
+    restart: $RESTART_POLICY
     labels:
-      - swag=enable
-      - swag_address=mysql-workbench
-      - swag_port=3000
-      - swag_proto=http
-      - swag_url=${MYSQL_WB_SWAG_URL}
+      <<: *flame_labels
   adminer:
     image: adminer
-    networks:
-      - intranet
-      - db
-    ports:
-      - 18080:8080
+    <<: *networks
+    labels:
+      <<: *flame_labels
 networks:
   intranet:
     external: true
