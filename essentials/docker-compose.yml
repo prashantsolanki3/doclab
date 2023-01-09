@@ -48,7 +48,6 @@ services:
       - DOCKER_HOST=dockerproxy
     volumes:
       - ${VOL_CONFIG}/flame:/app/data
-      - DCOKER_HOST=dockerproxy
     restart: ${RESTART_POLICY}
     deploy:
       mode: global
